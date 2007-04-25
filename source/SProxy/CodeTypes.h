@@ -62,7 +62,10 @@ enum CODEFLAGS
 	CODEFLAG_ONEWAY         = 0x00400000,
 
 	// MinOccurs=0/MaxOccurs=1 Wrapper
-	CODEFLAG_DYNARRAYWRAPPER= 0x00800000
+	CODEFLAG_DYNARRAYWRAPPER= 0x00800000,
+
+	// nullable/nillable element
+	CODEFLAG_NULLABLE       = 0x01000000
 };
 
 class CCodeElement
