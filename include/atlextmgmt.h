@@ -11,6 +11,10 @@
 #ifndef __ATLEXTMGMT_H__
 #define __ATLEXTMGMT_H__
 
+#ifdef _WIN32_WCE
+	#error atlextmgmt.h is not supported on Windows CE (_WIN32_WCE is defined)
+#endif //_WIN32_WCE
+
 #pragma once
 #pragma warning(push)
 #pragma warning(disable: 4702)

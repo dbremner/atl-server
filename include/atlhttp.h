@@ -27,7 +27,11 @@
 #include <security.h>
 #include <atlenc.h>
 #ifndef _ATL_NO_DEFAULT_LIBS
+#ifndef _WIN32_WCE
 #pragma comment(lib, "ws2_32.lib")
+#else // _WIN32_WCE
+#pragma comment(lib, "ws2.lib")
+#endif // _WIN32_WCE
 #pragma comment(lib, "SECUR32.LIB")
 #endif  // !_ATL_NO_DEFAULT_LIBS
 

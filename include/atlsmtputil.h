@@ -13,6 +13,10 @@
 
 #pragma once
 
+#ifdef _WIN32_WCE
+	#error atlsmtputil.h is not supported on Windows CE (_WIN32_WCE is defined)
+#endif //_WIN32_WCE
+
 #if (defined(_WINSOCKAPI_) && !defined(_WINSOCK2API_))
 #error <atlsmtputil.h> requires <winsock2.h> -- include <winsock2.h> before you include <windows.h> or <winsock.h>
 #endif
