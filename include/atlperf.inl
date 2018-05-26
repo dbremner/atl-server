@@ -2398,27 +2398,28 @@ inline void CPerfMon::ClearMap() throw()
 
 ATL_NOINLINE inline HRESULT CPerfMon::PersistToXML(IStream *pStream, BOOL bFirst/*=TRUE*/, BOOL bLast/*=TRUE*/) throw(...)
 {
-	ATLASSERT(pStream != NULL);
-	if (pStream == NULL)
-		return E_INVALIDARG;
+    ATLASSERT(pStream != NULL);
+    if (pStream == NULL)
+        return E_INVALIDARG;
 
-	CPerfLock lock(this);
-	if (FAILED(lock.GetStatus()))
-		return ERROR_SUCCESS;
+    CPerfLock lock(this);
+    if (FAILED(lock.GetStatus()))
+        return ERROR_SUCCESS;
 
-	CStringA strXML;
-	HRESULT hr = S_OK;
-	ULONG nLen = 0;
-	
-	if (bFirst)
-	{
-		strXML = "<?xml version=\"1.0\" ?>\r\n<perfPersist>\r\n";
-		hr = pStream->Write(strXML, strXML.GetLength(), &nLen);
-		if (hr != S_OK)
-			return hr;
-	}
+    CStringA strXML;
+    HRESULT hr = S_OK;
+    ULONG nLen = 0;
 
-	strXML.Format("\t<perfmon name=\"%s\">\r\n", CT2CA(GetAppName()));
+    if (bFirst)
+    {
+        strXML = "<?xml version=\"1.0\" ?>\r\n<perfPersist>\r\n";
+        hr = pStream->Write(strXML, strXML.GetLength(), &nLen);
+        if (hr != S_OK)
+            return hr;
+    }
+
+    CStringA strAppName{GetAppName()};
+	strXML.Format("\t<perfmon name=\"%s\">\r\n", (LPCSTR)strAppName);
 	hr = pStream->Write(strXML, strXML.GetLength(), &nLen);
 
 	for (UINT i=0; i<_GetNumCategories(); i++)
