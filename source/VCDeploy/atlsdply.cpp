@@ -55,8 +55,6 @@ errno_t __cdecl DuplicateEnvString(TCHAR **_PBuffer, size_t *_PBufferSizeInBytes
 #define _TCSNLEN(sz,c) (min(_tcslen(sz), c))
 #define PATHLEFT(sz) (_MAX_PATH - _TCSNLEN(sz, (_MAX_PATH-1)) - 1)
 
-typedef LANGID (WINAPI* PFNGETUSERDEFAULTUILANGUAGE)();
-
 static BOOL CALLBACK _EnumResLangProc(HMODULE /*hModule*/, LPCTSTR /*pszType*/, 
 	LPCTSTR /*pszName*/, WORD langid, LONG_PTR lParam)
 {
@@ -79,18 +77,12 @@ static BOOL CALLBACK _EnumResLangProc(HMODULE /*hModule*/, LPCTSTR /*pszType*/,
 //////////////////////////////////////////////////////////////////////////
 HRESULT GetUserDefaultUILanguageLegacyCompat(LANGID* pLangid)
 {
-	HRESULT hr=E_FAIL;	
-	if (pLangid == nullptr) { return E_POINTER; }
-	PFNGETUSERDEFAULTUILANGUAGE pfnGetUserDefaultUILanguage;	
-	HINSTANCE hKernel32 = ::GetModuleHandle(_T("kernel32.dll"));
-	pfnGetUserDefaultUILanguage = (PFNGETUSERDEFAULTUILANGUAGE)::GetProcAddress(hKernel32, "GetUserDefaultUILanguage");
-	if(pfnGetUserDefaultUILanguage != nullptr)
-	{
-		*pLangid = pfnGetUserDefaultUILanguage();
-		hr = S_OK;
-	}
-
-	return hr;
+    if (pLangid == nullptr)
+    {
+        return E_POINTER;
+    }
+    *pLangid = GetUserDefaultUILanguage();
+    return S_OK;
 }
 
 //////////////////////////////////////////////////////////////////////////
