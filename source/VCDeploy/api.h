@@ -80,9 +80,11 @@ public:
 		CComPtr<IMSAdminBase> spAdmBase;
 		HRESULT hr = spAdmBase.CoCreateInstance(CLSID_MSAdminBase);
 		if (FAILED(hr))
-			return E_FAIL;
+		{
+		    return E_FAIL;
+	    }
 
-		METADATA_HANDLE hRootHandle = NULL;
+	    METADATA_HANDLE hRootHandle = NULL;
 		CString strKey(_T("/LM/W3SVC/1/ROOT/"));
 		strKey += szVRootName;
 		CT2W strPath(strKey);
@@ -93,9 +95,11 @@ public:
 							20,
 							&hRootHandle);
 		if (hr != S_OK)
-			return hr;
+		{
+		    return hr;
+	    }
 
-		spAdmBase->CloseKey(hRootHandle);
+	    spAdmBase->CloseKey(hRootHandle);
 		return hr;
 
 	}
@@ -105,9 +109,11 @@ public:
 		CComPtr<IMSAdminBase> spAdmBase;
 		HRESULT hr = spAdmBase.CoCreateInstance(CLSID_MSAdminBase);
 		if (FAILED(hr))
-			return E_FAIL;
+		{
+		    return E_FAIL;
+	    }
 
-		return spAdmBase->SaveData();
+	    return spAdmBase->SaveData();
 	}
 
 	HRESULT Connect(LPCWSTR szPath)
@@ -130,26 +136,34 @@ public:
 			}
 		}
 		if (hr != S_OK)
-			return hr;
+		{
+		    return hr;
+	    }
 
-		m_spAds = spDispAds;
+	    m_spAds = spDispAds;
 		if (!m_spAds)
-			hr = E_NOINTERFACE;
-		return hr;
+		{
+		    hr = E_NOINTERFACE;
+	    }
+	    return hr;
 	}
 
 	void Disconnect()
 	{
 		if (m_spAds)
-			m_spAds.Release();
+		{
+		    m_spAds.Release();
+	    }
 	}
 
 	HRESULT CreateApp(short nIso)
 	{
 		if (!m_spAds)
-			return E_UNEXPECTED;
+		{
+		    return E_UNEXPECTED;
+	    }
 
-		CComQIPtr<IDispatch> spAdmin = m_spAds;
+	    CComQIPtr<IDispatch> spAdmin = m_spAds;
 		if (!spAdmin)
 			return E_NOINTERFACE;
 
@@ -171,60 +185,82 @@ public:
 	HRESULT CreateAppOnly(LPCWSTR szRootName, short nIsolation, IADsContainer **ppAds)
 	{
 		if (!m_spAds)
-			return E_UNEXPECTED;
+		{
+		    return E_UNEXPECTED;
+	    }
 
-		HRESULT hr = E_FAIL;
+	    HRESULT hr = E_FAIL;
 		CComPtr<IDispatch> spDispNewContainer;
 		hr = m_spAds->Create(CComBSTR(L"IIsWebDirectory"),
 						CComBSTR(szRootName),
 						&spDispNewContainer);
 		if (hr != S_OK)
-			return hr;
+		{
+		    return hr;
+	    }
 
-		if (ppAds)
-			hr = spDispNewContainer->QueryInterface(__uuidof(IADsContainer), (void**)ppAds);
+	    if (ppAds)
+	    {
+	        hr = spDispNewContainer->QueryInterface(__uuidof(IADsContainer), (void**)ppAds);
+	    }
 
-		if (m_spAds)
-			m_spAds.Release();
+	    if (m_spAds)
+	    {
+	        m_spAds.Release();
+	    }
 
-		hr = spDispNewContainer->QueryInterface(__uuidof(IADsContainer), (void**)&m_spAds);
+	    hr = spDispNewContainer->QueryInterface(__uuidof(IADsContainer), (void**)&m_spAds);
 		if (hr != S_OK)
-			return hr;
+		{
+		    return hr;
+	    }
 
-		return CreateApp(nIsolation);
+	    return CreateApp(nIsolation);
 	}
 
 	HRESULT CreateVRoot(LPCWSTR szRootName, short nIsolation, IADsContainer **ppAds)
 	{
 		if (!m_spAds)
-			return E_UNEXPECTED;
+		{
+		    return E_UNEXPECTED;
+	    }
 
-		HRESULT hr = E_FAIL;
+	    HRESULT hr = E_FAIL;
 		CComPtr<IDispatch> spDispNewContainer;
 		hr = m_spAds->Create(CComBSTR(L"IIsWebVirtualDir"),
 						CComBSTR(szRootName),
 						&spDispNewContainer);
 		if (hr != S_OK)
-			return hr;
+		{
+		    return hr;
+	    }
 
-		if (ppAds)
-			hr = spDispNewContainer->QueryInterface(__uuidof(IADsContainer), (void**)ppAds);
+	    if (ppAds)
+	    {
+	        hr = spDispNewContainer->QueryInterface(__uuidof(IADsContainer), (void**)ppAds);
+	    }
 
-		if (m_spAds)
-			m_spAds.Release();
+	    if (m_spAds)
+	    {
+	        m_spAds.Release();
+	    }
 
-		hr = spDispNewContainer->QueryInterface(__uuidof(IADsContainer), (void**)&m_spAds);
+	    hr = spDispNewContainer->QueryInterface(__uuidof(IADsContainer), (void**)&m_spAds);
 		if (hr != S_OK)
-			return hr;
+		{
+		    return hr;
+	    }
 
-		return CreateApp(nIsolation);
+	    return CreateApp(nIsolation);
 	}
 
 	HRESULT EnableApp()
 	{
 		if (!m_spAds)
-			return E_UNEXPECTED;
-		CComQIPtr<IDispatch> spDispContainer = m_spAds;
+		{
+		    return E_UNEXPECTED;
+	    }
+	    CComQIPtr<IDispatch> spDispContainer = m_spAds;
 		if (!spDispContainer)
 			return E_NOINTERFACE;
 		CComVariant vResult;
@@ -235,8 +271,10 @@ public:
 						const VARIANT& vPropValue)
 	{
 		if (!m_spAds)
-			return E_UNEXPECTED;
-		CComQIPtr<IADs> spAds = m_spAds;
+		{
+		    return E_UNEXPECTED;
+	    }
+	    CComQIPtr<IADs> spAds = m_spAds;
 		if (!spAds)
 			return E_NOINTERFACE;
 
@@ -247,9 +285,11 @@ public:
 						VARIANT& vPropValue)
 	{
 		if (!m_spAds)
-			return E_UNEXPECTED;
+		{
+		    return E_UNEXPECTED;
+	    }
 
-		CComQIPtr<IADs> spAds = m_spAds;
+	    CComQIPtr<IADs> spAds = m_spAds;
 		if (!spAds)
 			return E_NOINTERFACE;
 		CComBSTR bstrName(szPropName);
@@ -261,9 +301,11 @@ public:
 						VARIANT& vPropValue)
 	{
 		if (!m_spAds)
-			return E_UNEXPECTED;
+		{
+		    return E_UNEXPECTED;
+	    }
 
-		CComQIPtr<IADs> spAds = m_spAds;
+	    CComQIPtr<IADs> spAds = m_spAds;
 		if (!spAds)
 			return E_NOINTERFACE;
 		CComBSTR bstrName(szPropName);
@@ -274,8 +316,10 @@ public:
 	HRESULT SetInfo()
 	{
 		if (!m_spAds)
-			return E_UNEXPECTED;
-		CComQIPtr<IADs> spAds = m_spAds;
+		{
+		    return E_UNEXPECTED;
+	    }
+	    CComQIPtr<IADs> spAds = m_spAds;
 		if (!spAds)
 			return E_NOINTERFACE;
 		return spAds->SetInfo();
@@ -284,9 +328,11 @@ public:
 	HRESULT DeleteVRoot(LPCWSTR wszRoot)
 	{
 		if (!m_spAds)
-			return E_UNEXPECTED;
+		{
+		    return E_UNEXPECTED;
+	    }
 
-		CComQIPtr<IDispatch> spAdmin = m_spAds;
+	    CComQIPtr<IDispatch> spAdmin = m_spAds;
 		if (!spAdmin)
 			return E_NOINTERFACE;
 
@@ -337,19 +383,27 @@ public:
 		}
 
 		if (m_strSettingsFile.GetLength() <= 0)
-			m_bShowUsage = true;
-		return true;
+		{
+		    m_bShowUsage = true;
+	    }
+	    return true;
 	}
 
 	void FindArg(TCHAR* pArg)
 	{
 		if (!pArg || *pArg == _T('\0'))
-			return;
+		{
+		    return;
+	    }
 
-		if (!_tcsicmp(pArg, "nologo"))
-			m_bNoLogo = true;
-		if (!_tcsicmp(pArg, "?"))
-			m_bShowUsage = true;
+	    if (!_tcsicmp(pArg, "nologo"))
+	    {
+	        m_bNoLogo = true;
+	    }
+	    if (!_tcsicmp(pArg, "?"))
+	    {
+	        m_bShowUsage = true;
+	    }
 	}
 
 	bool m_bNoLogo;

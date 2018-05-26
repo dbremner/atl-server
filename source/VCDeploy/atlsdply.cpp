@@ -61,9 +61,11 @@ static BOOL CALLBACK _EnumResLangProc(HMODULE /*hModule*/, LPCTSTR /*pszType*/,
 	LPCTSTR /*pszName*/, WORD langid, LONG_PTR lParam)
 {
 	if(lParam == NULL)
-		return FALSE;
-		
-	LANGID* plangid = reinterpret_cast< LANGID* >( lParam );
+	{
+	    return FALSE;
+    }
+
+    LANGID* plangid = reinterpret_cast< LANGID* >( lParam );
 	*plangid = langid;
 
 	return TRUE;
@@ -114,7 +116,9 @@ HRESULT LoadUILibrary(LPCTSTR szPath, LPCTSTR szDllName, DWORD dwExFlags,
     if (szDllName== nullptr || *szDllName == '\0') { return E_POINTER; }
 
     if (!szPath || !*szPath || !szDllName || !*szDllName)
+    {
         return E_INVALIDARG;
+    }
 
     if (phinstOut != nullptr)
     {
@@ -160,7 +164,9 @@ HRESULT LoadUILibrary(LPCTSTR szPath, LPCTSTR szDllName, DWORD dwExFlags,
             for (n = 0; n < i; n++)
             {
                 if (rglcid[n] == rglcid[i])
+                {
                     break;
+                }
             }
 
             if (n < i)
@@ -205,7 +211,9 @@ HRESULT LoadUILibrary(LPCTSTR szPath, LPCTSTR szDllName, DWORD dwExFlags,
                 {
                     // Skip current and previous dirs, "." and ".."
                     if (!_tcscmp(wfdw.cFileName, _T(".")) || !_tcscmp(wfdw.cFileName, _T("..")))
+                    {
                         continue;
+                    }
 
                     // Does this dir have a copy of the dll?
                     szPathTemp[pathEnd] = L'\0';
@@ -401,9 +409,11 @@ int main(int argc, char* argv[])
 		}
 
 		if (!argsParser.m_bNoLogo)
-			PrintMessage(IDS_BANNER);
+		{
+		    PrintMessage(IDS_BANNER);
+	    }
 
-		if (argsParser.m_bShowUsage)
+	    if (argsParser.m_bShowUsage)
 		{
 			PrintMessage(IDS_USAGE);
 			return 0;

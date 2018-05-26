@@ -287,7 +287,9 @@ int PrintMessage(LPCTSTR szPrefix, unsigned int nMsgID, LPCTSTR szExtraInfo)
 {
 	CString strMsg;
 	if (!LoadStringFromModule(nMsgID, strMsg))
-		_tprintf("Failed to load error string %x\n", nMsgID);
+	{
+	    _tprintf("Failed to load error string %x\n", nMsgID);
+	}
 	else
 	{
 		return PrintMessage(szPrefix, (LPCTSTR)strMsg, szExtraInfo);
@@ -298,18 +300,24 @@ int PrintMessage(LPCTSTR szPrefix, unsigned int nMsgID, LPCTSTR szExtraInfo)
 int PrintMessage(LPCTSTR szPrefix, LPCTSTR szMsg, LPCTSTR szExtraInfo)
 {
 	if (szExtraInfo)
-		_tprintf("vcdeploy : %s %s %s.\n", szPrefix, szMsg, szExtraInfo);
+	{
+	    _tprintf("vcdeploy : %s %s %s.\n", szPrefix, szMsg, szExtraInfo);
+	}
 	else
-		_tprintf("vcdeploy : %s %s\n", szPrefix, szMsg);
+	{
+	    _tprintf("vcdeploy : %s %s\n", szPrefix, szMsg);
+    }
 
-	return ATLSDPLY_SUCCESS;
+    return ATLSDPLY_SUCCESS;
 }
 
 int PrintMessage(unsigned int nMsgID)
 {
 	CString strMsg;
 	if (!LoadStringFromModule(nMsgID, strMsg))
-		_tprintf("Failed to load error string %x\n", nMsgID);
+	{
+	    _tprintf("Failed to load error string %x\n", nMsgID);
+	}
 	else
 	{
 		_tprintf("%s\n", static_cast<const char *>(strMsg));
@@ -321,8 +329,10 @@ bool FormatMsg(CString& strDest, UINT uId, ...)
 {
     CString strFmt;
     if (!strFmt.LoadString(uId))
+    {
         return false;
-	va_list argList;
+    }
+    va_list argList;
 	va_start( argList, uId );
     strDest.FormatV(strFmt, argList);
 	va_end( argList );
@@ -350,7 +360,9 @@ int ProcessSettings(CDepSettings *pSettings)
 	RETURN_ON_UNEXPECTED(result);
 
 	if (nListLen == 0)
-		return ATLSDPLY_SUCCESS; // nothing to do
+	{
+	    return ATLSDPLY_SUCCESS; // nothing to do
+    }
 
 	// start processing stuff for each host
 	CComPtr<IXMLDOMNode> spHostNode;
@@ -477,10 +489,12 @@ int ConfigureRestrictionList(CADSIHelper * /*pAdsHelper*/,
 		strSvc += L"/W3SVC";
 
 		if( pSettings->GetIISMajorVer() < 6 )
-			return ATLSDPLY_SUCCESS;
+		{
+		    return ATLSDPLY_SUCCESS;
+	    }
 
 
-		// create the full path to the isapi
+	    // create the full path to the isapi
 		CPathW strIsapiPath;
 		CStringW strVirtDirPath(szvdfspath);
 		CStringW strExtFileName(szextfilename);
@@ -501,8 +515,11 @@ int ConfigureRestrictionList(CADSIHelper * /*pAdsHelper*/,
 			hr = AddApplicationDependencyUponGroup( pwszSvc, pwszDescription, pwszDescription );
 		}
 
-		if( hr == S_FALSE ) // the strIsapiPath has already been on the restriction list.
+		if( hr == S_FALSE )
+		{
+		    // the strIsapiPath has already been on the restriction list.
 			hr = S_OK;
+	    }
 	}
 	catch(...)
 	{
@@ -637,8 +654,10 @@ int CheckVRootExistance(const CComBSTR& bstrHostName,
 	ATLASSERT(pAdsHelper);
 	ATLASSERT(pSettings);
 	if (!pAdsHelper || !pSettings)
-		RETURN_ON_UNEXPECTED(ATLSDPLY_FAIL);
-	HRESULT hr = E_FAIL;
+	{
+	    RETURN_ON_UNEXPECTED(ATLSDPLY_FAIL);
+    }
+    HRESULT hr = E_FAIL;
 
 	try
 	{
@@ -690,9 +709,11 @@ int CreateVRoot(const CComBSTR& bstrHostName,
 	ATLASSERT(pAdsHelper);
 	ATLASSERT(pSettings);
 	if (!pAdsHelper || !pSettings)
-		RETURN_ON_UNEXPECTED(ATLSDPLY_FAIL);
+	{
+	    RETURN_ON_UNEXPECTED(ATLSDPLY_FAIL);
+    }
 
-	try
+    try
 	{
 		CStringW strVirtDirName(pSettings->GetVirtDirName());
 		CFixedStringT<CStringW, MAX_PATH> strAdsPathRoot(L"IIS://");
@@ -754,9 +775,11 @@ int ConfigureVRoot(	CADSIHelper *pAdsHelper,
 	ATLASSERT(pAdsHelper);
 	ATLASSERT(pSettings);
 	if (!pAdsHelper || !pSettings)
-		return IDS_UNEXPECTED;
+	{
+	    return IDS_UNEXPECTED;
+    }
 
-	HRESULT hr = E_FAIL;
+    HRESULT hr = E_FAIL;
 	CComVariant val;
 
 	// Set some general properties about the vroot
@@ -788,9 +811,11 @@ LONG FindMapping(CComSafeArray<VARIANT> *pArray, BSTR bstrExt)
 {
 	// if the array is empty, then the entry is not there
 	if (!pArray->m_psa)
-		return -1;
+	{
+	    return -1;
+    }
 
-	// find an item that starts with bstrExt followed by ','
+    // find an item that starts with bstrExt followed by ','
 	CComBSTR bstrFullExt(bstrExt);
 	bstrFullExt.Append(",");
 	size_t nLen = wcslen(bstrFullExt);
@@ -801,7 +826,9 @@ LONG FindMapping(CComSafeArray<VARIANT> *pArray, BSTR bstrExt)
 		CComVariant var;
 		var = pArray->GetAt(lIndex);
 		if (var.vt == VT_BSTR && !_wcsnicmp(bstrFullExt, var.bstrVal, nLen))
-			return lIndex;
+		{
+		    return lIndex;
+	    }
 	}
 	return -1;
 }
@@ -812,16 +839,20 @@ int SetRootAppMappings(	CADSIHelper *pAdsHelper,
 	ATLASSERT(pAdsHelper);
 	ATLASSERT(pSettings);
 	if (!pAdsHelper || !pSettings)
-		return IDS_UNEXPECTED;
+	{
+	    return IDS_UNEXPECTED;
+    }
 
-	LPCTSTR szvdfspath = pSettings->GetVirtDirFSPath();
+    LPCTSTR szvdfspath = pSettings->GetVirtDirFSPath();
 	LPCTSTR szextfilename = pSettings->GetExtensionFileName();
 	if ((!szvdfspath || *szvdfspath == _T('\0') ) ||
 		(!szextfilename || *szextfilename == _T('\0') )
 		)
-		return ATLSDPLY_SUCCESS; // not enough info!
+	{
+	    return ATLSDPLY_SUCCESS; // not enough info!
+    }
 
-	HRESULT hr = E_FAIL;
+	    HRESULT hr = E_FAIL;
 	CStringW rgMappings[MAX_VERB_BLOCKS];
 	CComPtr<IXMLDOMNodeList> spMappingNodes;
 	CPathW strIsapiPath;
@@ -832,19 +863,25 @@ int SetRootAppMappings(	CADSIHelper *pAdsHelper,
 	RETURN_ON_UNEXPECTED(hr);
 
 	if (!spMappingNodes)
-		return ATLSDPLY_SUCCESS; // nothing to do
-	
+	{
+	    return ATLSDPLY_SUCCESS; // nothing to do
+    }
+
 	long nMappingCount = 0, i=0;
 	hr = spMappingNodes->get_length(&nMappingCount);
 	RETURN_ON_UNEXPECTED(hr);
 
 	if (nMappingCount <= 0)
-		return ATLSDPLY_SUCCESS; // nothing to do
+	{
+	    return ATLSDPLY_SUCCESS; // nothing to do
+    }
 
 	if (nMappingCount > MAX_VERB_BLOCKS)
-		RETURN_ON_FAIL2(ATLSDPLY_FAIL, ATLS_ERR_TOOMANYVERBBLOCKS);
+	{
+	    RETURN_ON_FAIL2(ATLSDPLY_FAIL, ATLS_ERR_TOOMANYVERBBLOCKS);
+    }
 
-	// get the current script mappings
+    // get the current script mappings
 	CComVariant vCurrentMappings;
 	CComSafeArray<VARIANT> saCurrentMappings;
 
@@ -891,7 +928,9 @@ int SetRootAppMappings(	CADSIHelper *pAdsHelper,
 
 		hr = spMappingNode->selectNodes(CComBSTR(L"VERB"), &spExtVerbList);
 		if (hr != S_OK)
-			continue; // no verbs, nothing to do
+		{
+		    continue; // no verbs, nothing to do
+        }
 
 		RETURN_ON_UNEXPECTED_P(spExtVerbList);
 
@@ -899,7 +938,9 @@ int SetRootAppMappings(	CADSIHelper *pAdsHelper,
 		RETURN_ON_UNEXPECTED(hr);
 
 		if (nVerbs == 0)
-			continue; // no verbs, nothing to do
+		{
+		    continue; // no verbs, nothing to do
+        }
 
 		if (nVerbs > MAX_VERB_COUNT)
 		{
@@ -928,12 +969,16 @@ int SetRootAppMappings(	CADSIHelper *pAdsHelper,
 
 				strEntry += bstrVerb;
 				if (z < nVerbs-1)
-					strEntry +=  L',';
+				{
+				    strEntry +=  L',';
+			    }
 			}
 		}
 		else
-			strEntry += L",0";
-		LONG lIndex = FindMapping(&saCurrentMappings, bstrExt);
+		{
+		    strEntry += L",0";
+	    }
+	    LONG lIndex = FindMapping(&saCurrentMappings, bstrExt);
 		if (lIndex >= 0)
 		{
 			// update the entry in the array
@@ -960,15 +1005,19 @@ int SetRootAppMappings(	CADSIHelper *pAdsHelper,
 		if (rgMappings[y].GetLength() != 0)
 		{
 			if (S_OK != rgsaMappings.Add(CComVariant(CComBSTR(rgMappings[y]))))
-				RETURN_ON_UNEXPECTED(E_FAIL);
+			{
+			    RETURN_ON_UNEXPECTED(E_FAIL);
+		    }
 		}
 	}
 	// set the safearray of BSTR 
 	if (saCurrentMappings.m_psa)
 	{
 		if (rgsaMappings.m_psa)
-			saCurrentMappings.Add(rgsaMappings);
-		CComVariant vSafearray(saCurrentMappings);
+		{
+		    saCurrentMappings.Add(rgsaMappings);
+	    }
+	    CComVariant vSafearray(saCurrentMappings);
 		vSafearray.vt=VT_ARRAY|VT_VARIANT;
 		hr = pAdsHelper->SetProperty(L"ScriptMaps", vSafearray);
 	}
@@ -1110,8 +1159,10 @@ int LocalW3svcReset()
 				else if (svcStatus.dwCurrentState == SERVICE_STOPPED)
 				{
 					if (nRetryCount > 50)
-						break;
-					Sleep(100);
+					{
+					    break;
+				    }
+				    Sleep(100);
 			    	if (!StartService(hW3Svc, NULL, nullptr))
     				{
     					PrintErrorWithLastWin32(IDS_FAILEDSTARTSVC);
@@ -1176,7 +1227,9 @@ int UpdateFileSystem(CDepSettings *pSettings)
 	RETURN_ON_UNEXPECTED(hr);
 
 	if (nAppFileGroups <= 0)
-		return ATLSDPLY_SUCCESS; // nothing to do
+	{
+	    return ATLSDPLY_SUCCESS; // nothing to do
+    }
 
 	for (i=0; i<nAppFileGroups; i++)
 	{
@@ -1194,7 +1247,9 @@ int UpdateFileSystem(CDepSettings *pSettings)
 		RETURN_ON_UNEXPECTED(hr);
 
 		if (nFileNameNodes <=0)
-			continue; // no files in node.
+		{
+		    continue; // no files in node.
+        }
 
 		for (long x=0; x<nFileNameNodes; x++)
 		{
@@ -1282,7 +1337,9 @@ int RegisterExtension(CADSIHelper* /*pAdsHelper*/,
 {
 
 	if (!pSettings->GetRegIsapi())
-		return ATLSDPLY_SUCCESS; // isapi doesn't need to be registered
+	{
+	    return ATLSDPLY_SUCCESS; // isapi doesn't need to be registered
+    }
 
 	LPCTSTR szVirtDirPath = pSettings->GetVirtDirFSPath();
 	LPCTSTR szExtFileName = pSettings->GetExtensionFileName();
@@ -1316,45 +1373,59 @@ int RegisterExtension(CADSIHelper* /*pAdsHelper*/,
 
 	HINSTANCE hInstExtension = ::LoadLibraryW(strIsapiPath);
 	if (!hInstExtension)
-		return IDS_ERR_REGISTERING_EXTENSION;
+	{
+	    return IDS_ERR_REGISTERING_EXTENSION;
+    }
 
-	PFNRegisterServer pfnRegister = (PFNRegisterServer)GetProcAddress(hInstExtension, _T("DllRegisterServer"));
+    PFNRegisterServer pfnRegister = (PFNRegisterServer)GetProcAddress(hInstExtension, _T("DllRegisterServer"));
 	if (pfnRegister)
 	{
 		if (S_OK == pfnRegister())
-			nRet = ATLSDPLY_SUCCESS;
+		{
+		    nRet = ATLSDPLY_SUCCESS;
+	    }
 	}
 	else
-		return IDS_ERR_REGISTERING_EXTENSION;
-	FreeLibrary(hInstExtension);
+	{
+	    return IDS_ERR_REGISTERING_EXTENSION;
+    }
+    FreeLibrary(hInstExtension);
 	return nRet;
 }
 
 BOOL LoadStringFromModule(int nID, CString& str)
 {		
 	if (!str.LoadString(nID))
-		return FALSE;
-	return TRUE;
+	{
+	    return FALSE;
+    }
+    return TRUE;
 }
 
 int CheckMinVRootConfigSettings(CDepSettings *pSettings)
 {
 	if (!pSettings)
-		return IDS_UNEXPECTED;
-	
-	// For now, if we don't have an ISAPI extension file name
+	{
+	    return IDS_UNEXPECTED;
+    }
+
+    // For now, if we don't have an ISAPI extension file name
 	// or we don't have any script mappings, we can't create an
 	// atls vroot
 	LPCTSTR szExtensionFile = pSettings->GetExtensionFileName();
 	if (!szExtensionFile || *szExtensionFile == _T('\0'))
-		return ATLSDPLY_FAIL;
+	{
+	    return ATLSDPLY_FAIL;
+    }
 
-	CComPtr<IXMLDOMNodeList> spList;
+    CComPtr<IXMLDOMNodeList> spList;
 	HRESULT hr = pSettings->GetAppMappingList(&spList);
 	if (hr != S_OK && spList)
-		return ATLSDPLY_FAIL;
+	{
+	    return ATLSDPLY_FAIL;
+    }
 
-	return ATLSDPLY_SUCCESS;
+    return ATLSDPLY_SUCCESS;
 }
 
 int RuntimeCheck()
@@ -1362,8 +1433,10 @@ int RuntimeCheck()
 	CComPtr<IMSAdminBase> spAdmBase;
 	HRESULT hr = spAdmBase.CoCreateInstance(CLSID_MSAdminBase);
 	if (hr != S_OK)
-		return ATLSDPLY_FAIL;
-	return ATLSDPLY_SUCCESS;
+	{
+	    return ATLSDPLY_FAIL;
+    }
+    return ATLSDPLY_SUCCESS;
 }
 
 // This function checks the length of the files and then does
@@ -1388,7 +1461,9 @@ HRESULT CheckFileDiff(LPCTSTR szSrcPath, LPCTSTR szDestPath)
 				S_OK == fDest.GetSize(lenDest))
 			{
 				if (lenSrc != lenDest)
-					hr = S_FALSE;
+				{
+				    hr = S_FALSE;
+				}
 				else
 				{
 					if (lenSrc > ULONG_MAX ||
@@ -1400,22 +1475,34 @@ HRESULT CheckFileDiff(LPCTSTR szSrcPath, LPCTSTR szDestPath)
 					{
 						if (lenSrc > ULONG_MAX || 
 							lenDest > ULONG_MAX)
-							hr = E_FAIL;
+						{
+						    hr = E_FAIL;
+						}
 						else
 						{
 							CHeapPtr<BYTE> pBuffSrc;
 							CHeapPtr<BYTE> pBuffDest;
 							hr = S_OK;
 							if (!pBuffSrc.Allocate((DWORD)lenSrc))
-								hr = S_FALSE;
-							if (hr == S_OK && !pBuffDest.Allocate((DWORD)lenDest))
-								hr = S_FALSE;
-							if (hr == S_OK && S_OK != fSrc.Read((LPVOID)(BYTE*)pBuffSrc, (DWORD)lenSrc))
-								hr = S_FALSE;
-							if (hr == S_OK && S_OK != fDest.Read((LPVOID)(BYTE*)pBuffDest, (DWORD)lenDest))
-								hr = S_FALSE;
-							if (hr == S_OK)
-								hr = memcmp((LPVOID)(BYTE*)pBuffSrc, (LPVOID)(BYTE*)pBuffDest, (DWORD)lenDest) != 0 ? S_FALSE : S_OK;
+							{
+							    hr = S_FALSE;
+						    }
+						    if (hr == S_OK && !pBuffDest.Allocate((DWORD)lenDest))
+						    {
+						        hr = S_FALSE;
+						    }
+						    if (hr == S_OK && S_OK != fSrc.Read((LPVOID)(BYTE*)pBuffSrc, (DWORD)lenSrc))
+						    {
+						        hr = S_FALSE;
+						    }
+						    if (hr == S_OK && S_OK != fDest.Read((LPVOID)(BYTE*)pBuffDest, (DWORD)lenDest))
+						    {
+						        hr = S_FALSE;
+						    }
+						    if (hr == S_OK)
+						    {
+						        hr = memcmp((LPVOID)(BYTE*)pBuffSrc, (LPVOID)(BYTE*)pBuffDest, (DWORD)lenDest) != 0 ? S_FALSE : S_OK;
+						    }
 						}
 					}
 
@@ -1423,7 +1510,9 @@ HRESULT CheckFileDiff(LPCTSTR szSrcPath, LPCTSTR szDestPath)
 			}
 		}
 		else
-			hr = S_FALSE; // dest doesn't exist
+		{
+		    hr = S_FALSE; // dest doesn't exist
+        }
 	}
 	else
 	{
@@ -1457,18 +1546,24 @@ HRESULT ProcessAccessCheck()
 		HANDLE hToken = nullptr;
 		// Current token will impersonate self
 		if (!ImpersonateSelf(SecurityImpersonation))
-			return 0;
-			
-		if(!OpenThreadToken(GetCurrentThread(), TOKEN_QUERY, FALSE, &hToken))
+		{
+		    return 0;
+	    }
+
+	    if(!OpenThreadToken(GetCurrentThread(), TOKEN_QUERY, FALSE, &hToken))
 		{
 			// per Q118626, we check the process token
 			// if there is no thread token
 			if (GetLastError() != ERROR_NO_TOKEN)
-				return E_FAIL;
+			{
+			    return E_FAIL;
+			}
 			else
 			{
 				if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken))
-					return E_FAIL;
+				{
+				    return E_FAIL;
+			    }
 			}
 		}
 		
@@ -1477,8 +1572,9 @@ HRESULT ProcessAccessCheck()
 		bool bIsMember = false;
 		myToken.Attach(hToken);
 		if (myToken.CheckTokenMembership(Sids::Admins(), &bIsMember))
-			return bIsMember ? S_OK : S_FALSE;
-		
+		{
+		    return bIsMember ? S_OK : S_FALSE;
+	    }
 	}
 	catch(...){	}
 	return E_UNEXPECTED; // should have returned something before here.

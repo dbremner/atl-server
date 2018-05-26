@@ -20,31 +20,43 @@ CDepSettings::CDepSettings()
 HRESULT CDepSettings::GetHostList(IXMLDOMNodeList **ppList)
 {
 	if (!ppList)
-		return E_INVALIDARG;
-	*ppList = nullptr;
+	{
+	    return E_INVALIDARG;
+    }
+    *ppList = nullptr;
 	if (m_spHostList)
-		return m_spHostList.CopyTo(ppList);
-	return E_FAIL;
+	{
+	    return m_spHostList.CopyTo(ppList);
+    }
+    return E_FAIL;
 }
 
 HRESULT CDepSettings::GetAppMappingList(IXMLDOMNodeList **ppList)
 {
 	if (!ppList)
-		return E_INVALIDARG;
-	*ppList = nullptr;
+	{
+	    return E_INVALIDARG;
+    }
+    *ppList = nullptr;
 	if (m_spAppMappings)
-		return m_spAppMappings.CopyTo(ppList);
-	return S_OK;
+	{
+	    return m_spAppMappings.CopyTo(ppList);
+    }
+    return S_OK;
 }
 
 HRESULT CDepSettings::GetFileGroups(IXMLDOMNodeList **ppList)
 {
 	if (!ppList)
-		return E_INVALIDARG;
-	*ppList = nullptr;
+	{
+	    return E_INVALIDARG;
+    }
+    *ppList = nullptr;
 	if (m_spAppFileGroups)
-		return m_spAppFileGroups.CopyTo(ppList);
-	return E_FAIL;
+	{
+	    return m_spAppFileGroups.CopyTo(ppList);
+    }
+    return E_FAIL;
 }
 
 unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
@@ -52,48 +64,62 @@ unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
 	HRESULT hr = E_FAIL;
 	
 	if (!szSettingsPath)
-		return IDS_UNEXPECTED;
+	{
+	    return IDS_UNEXPECTED;
+    }
 
-	// Create the DOM
+    // Create the DOM
 	CComPtr<IXMLDOMDocument> spDOMDoc;
 	CComPtr<IXMLDOMNode> spRoot;
 	CComPtr<IXMLDOMNode> spResultNode;
 
 	hr = spDOMDoc.CoCreateInstance(L"Microsoft.XMLDOM");
 	if (FAILED(hr))
-		return IDS_ERR_FAILEDTOCREATEDOM;
-	
-	hr = spDOMDoc->put_async(VARIANT_FALSE);
-	if (FAILED(hr))
-		return IDS_UNEXPECTED;
+	{
+	    return IDS_ERR_FAILEDTOCREATEDOM;
+    }
 
-	// Load the document
+    hr = spDOMDoc->put_async(VARIANT_FALSE);
+	if (FAILED(hr))
+	{
+	    return IDS_UNEXPECTED;
+    }
+
+    // Load the document
 	CComVariant varDocPath(szSettingsPath);
 	VARIANT_BOOL  vResult = VARIANT_FALSE;
 	hr = spDOMDoc->load(varDocPath, &vResult);
 	if (FAILED(hr) || vResult == VARIANT_FALSE)
-		return IDS_ERR_FAILEDTOLOAD_SETTINGS_XML;
+	{
+	    return IDS_ERR_FAILEDTOLOAD_SETTINGS_XML;
+    }
 
 
-	// find the root element
+    // find the root element
 	CComBSTR bstrSearch(L"ATLSINSTSETTINGS");
 	hr = spDOMDoc->selectSingleNode(bstrSearch, &spRoot);
 	if (FAILED(hr) || !spRoot)
-		return IDS_ERR_BADROOTNODE;
+	{
+	    return IDS_ERR_BADROOTNODE;
+    }
 
-	CStringW strWebHostNameW;
+    CStringW strWebHostNameW;
 	// load the list of web hosts
 	bstrSearch = L"WEBHOSTNAME";
 	hr = spRoot->selectNodes(bstrSearch, &m_spHostList);
 	if (FAILED(hr) || !m_spHostList)
-		return IDS_ERR_WEBHOSTNAME;
+	{
+	    return IDS_ERR_WEBHOSTNAME;
+	}
 	else
 	{
 		long len = 0;
 		m_spHostList->get_length(&len);
 		if (len == 0)
-			return IDS_ERR_WEBHOSTNAME;
-		CComPtr<IXMLDOMNode> spFirstWebHost;
+		{
+		    return IDS_ERR_WEBHOSTNAME;
+	    }
+	    CComPtr<IXMLDOMNode> spFirstWebHost;
 		hr = m_spHostList->get_item(0,&spFirstWebHost);
 		if (SUCCEEDED(hr))
 		{
@@ -106,25 +132,33 @@ unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
 	bstrSearch = L"VIRTDIRNAME";
 	hr = spRoot->selectSingleNode(bstrSearch, &spResultNode);
 	if (FAILED(hr) || !spResultNode)
-		return IDS_ERR_NOVIRTDIR;
+	{
+	    return IDS_ERR_NOVIRTDIR;
+    }
 
-	hr = spResultNode->get_text(&bstrSearch);
+    hr = spResultNode->get_text(&bstrSearch);
 	if (FAILED(hr) || *bstrSearch == L'\0')
-		return IDS_ERR_BADVIRTDIRNODE;
-	m_strVirtDirName = bstrSearch;
+	{
+	    return IDS_ERR_BADVIRTDIRNODE;
+    }
+    m_strVirtDirName = bstrSearch;
 
 	// load the virtual directory file system path
 	spResultNode.Release();
 	bstrSearch = L"VIRTDIRFSPATH";
 	hr = spRoot->selectSingleNode(bstrSearch, &spResultNode);
 	if (FAILED(hr) || !spResultNode)
-		return IDS_ERR_NOVIRTDIRFSPATH;
-	
-	spResultNode->get_text(&bstrSearch);
-	if (FAILED(hr) || *bstrSearch == L'\0')
-		return IDS_ERR_BADVIRTDIRSFPATHNODE;
+	{
+	    return IDS_ERR_NOVIRTDIRFSPATH;
+    }
 
-	m_strVirtDirFSPath = bstrSearch;
+    spResultNode->get_text(&bstrSearch);
+	if (FAILED(hr) || *bstrSearch == L'\0')
+	{
+	    return IDS_ERR_BADVIRTDIRSFPATHNODE;
+    }
+
+    m_strVirtDirFSPath = bstrSearch;
 	if (!AtlIsFullPathT(m_strVirtDirFSPath.GetString()))
 	{
 		CStringW strPath;
@@ -145,13 +179,19 @@ unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
 	{
 		hr = spResultNode->get_text(&bstrSearch);
 		if (FAILED(hr))
-			PrintWarning(IDS_ERR_BADDONOTCREATEVIRTDIR);
+		{
+		    PrintWarning(IDS_ERR_BADDONOTCREATEVIRTDIR);
+		}
 		else
 		{
 			if (!_wcsicmp(bstrSearch, L"false"))
-				m_bDoNotCreateVirtDir = false;
+			{
+			    m_bDoNotCreateVirtDir = false;
+			}
 			else if (!_wcsicmp(bstrSearch, L"true"))
-				m_bDoNotCreateVirtDir = true;
+			{
+			    m_bDoNotCreateVirtDir = true;
+			}
 			else
 			{
 				PrintWarning(IDS_ERR_INVALIDDONOTCREATEVIRTDIR);
@@ -167,13 +207,19 @@ unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
 	{
 		hr = spResultNode->get_text(&bstrSearch);
 		if (FAILED(hr))
-			PrintWarning(IDS_ERR_BADREGISTERISAPI);
+		{
+		    PrintWarning(IDS_ERR_BADREGISTERISAPI);
+		}
 		else
 		{
 			if (!_wcsicmp(bstrSearch, L"false"))
-				m_bRegIsapi = false;
+			{
+			    m_bRegIsapi = false;
+			}
 			else if (!_wcsicmp(bstrSearch, L"true"))
-				m_bRegIsapi = true;
+			{
+			    m_bRegIsapi = true;
+			}
 			else
 			{
 				PrintWarning(IDS_ERR_INVALIDREGISTERISAPI);
@@ -189,15 +235,23 @@ unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
 	{
 		hr = spResultNode->get_text(&bstrSearch);
 		if (FAILED(hr))
-			PrintWarning(IDS_ERR_BADUNLOADBEFORECOPY);
+		{
+		    PrintWarning(IDS_ERR_BADUNLOADBEFORECOPY);
+		}
 		else
 		{
 			if (!_wcsicmp(bstrSearch, L"false"))
-				m_bUnloadBeforeCopy = false;
+			{
+			    m_bUnloadBeforeCopy = false;
+			}
 			else if (!_wcsicmp(bstrSearch, L"true"))
-				m_bUnloadBeforeCopy = true;
+			{
+			    m_bUnloadBeforeCopy = true;
+			}
 			else
-				PrintWarning(IDS_ERR_INVALIDUNLOADBEFORECOPY);
+			{
+			    PrintWarning(IDS_ERR_INVALIDUNLOADBEFORECOPY);
+		    }
 		}
 	}
 
@@ -209,7 +263,9 @@ unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
 	{
 		hr = spResultNode->get_text(&bstrSearch);
 		if (FAILED(hr))
-			PrintWarning(IDS_ERR_BADAPPISOLATION);
+		{
+		    PrintWarning(IDS_ERR_BADAPPISOLATION);
+		}
 		else
 		{
 			wchar_t *szEnd = nullptr;
@@ -311,9 +367,11 @@ unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
 short CDepSettings::GetIISMajorVer()
 {
 	if (m_nIISMajorVer != -1)
-		return m_nIISMajorVer;
+	{
+	    return m_nIISMajorVer;
+    }
 
-	CRegKey verKey;
+    CRegKey verKey;
 	if (ERROR_SUCCESS == verKey.Open(HKEY_LOCAL_MACHINE,
 						_T("SOFTWARE\\Microsoft\\INetStp"),
 						KEY_READ))
