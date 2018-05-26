@@ -127,11 +127,7 @@ HRESULT LoadUILibrary(LPCTSTR szPath, LPCTSTR szDllName, DWORD dwExFlags,
     nPathEnd = _TCSNLEN(szPathTemp, _MAX_PATH-1);
     
     {	        
-		LANGID langid=0;
-		if (FAILED(GetUserDefaultUILanguageLegacyCompat(&langid)))
-		{
-			return E_UNEXPECTED;
-		}
+		LANGID langid=GetUserDefaultUILanguage();
         const LCID lcidUser = MAKELCID(langid, SORT_DEFAULT);
         
         LCID rglcid[3];
