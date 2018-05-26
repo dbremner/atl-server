@@ -71,7 +71,7 @@
 
 #include <initguid.h>
 #ifndef _WIN32_WCE
-#include <dbgautoattach.h>
+//#include <dbgautoattach.h> TODO how to fix this
 #endif // _WIN32_WCE
 
 #ifndef SESSION_COOKIE_NAME
