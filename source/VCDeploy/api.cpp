@@ -950,7 +950,7 @@ int SetRootAppMappings(	CADSIHelper *pAdsHelper,
 		CString strOut;
 		strOut.Format("Adding mapping %S\n", (LPCWSTR)strEntry);
 		printf(strOut);
-		ATLTRACE(L"Adding script mapping %s\n", strEntry);
+		ATLTRACE(L"Adding script mapping %s\n", (LPCWSTR)strEntry);
 #endif
 	}
 
@@ -1261,7 +1261,7 @@ int UpdateFileSystem(CDepSettings *pSettings)
 						dwAttrs &= ~FILE_ATTRIBUTE_READONLY;
 						if (!SetFileAttributes(vrDestPath, dwAttrs))
 						{
-							ATLTRACE(_T("Failed to remove readonly attribute of target file %s\n"), vrDestPath);
+							ATLTRACE(_T("Failed to remove readonly attribute of target file %s\n"), (LPCSTR)vrDestPath);
 						}
 					}
 				}
