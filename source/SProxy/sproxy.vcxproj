@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <SccProjectName />
+    <SccLocalPath />
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.27625.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>Release\</OutDir>
+    <IntDir>Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>Debug\</OutDir>
+    <IntDir>Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Release/sproxy.tlb</TypeLibraryName>
+    </Midl>
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;OUTPUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ProgramDataBaseFileName>$(IntDir)vc70.pdb</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/SAFESEH %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;msvcrt.lib;atls.lib;msxml2.lib;ws2_32.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)sproxy.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)sproxy.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>false</GenerateMapFile>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Debug/sproxy.tlb</TypeLibraryName>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/D "OUTPUT" %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ProgramDataBaseFileName>$(IntDir)vc70.pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>msxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)sproxy.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)sproxy.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>false</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AttributeParser.cpp" />
+    <ClCompile Include="CodeTypeBuilder.cpp" />
+    <ClCompile Include="ComplexType.cpp" />
+    <ClCompile Include="ComplexTypeParser.cpp" />
+    <ClCompile Include="Content.cpp" />
+    <ClCompile Include="ContentParser.cpp" />
+    <ClCompile Include="CppCodeGenerator.cpp" />
+    <ClCompile Include="DiscoMapDocument.cpp" />
+    <ClCompile Include="DiscoMapParser.cpp" />
+    <ClCompile Include="Element.cpp" />
+    <ClCompile Include="ElementParser.cpp" />
+    <ClCompile Include="Emit.cpp" />
+    <ClCompile Include="ErrorHandler.cpp" />
+    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="QName.cpp" />
+    <ClCompile Include="Schema.cpp" />
+    <ClCompile Include="SchemaParser.cpp" />
+    <ClCompile Include="SimpleTypeParser.cpp" />
+    <ClCompile Include="sproxy.cpp" />
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Util.cpp" />
+    <ClCompile Include="WSDLBinding.cpp" />
+    <ClCompile Include="WSDLBindingParser.cpp" />
+    <ClCompile Include="WSDLMessageParser.cpp" />
+    <ClCompile Include="WSDLMessagePart.cpp" />
+    <ClCompile Include="WSDLOperationIOParser.cpp" />
+    <ClCompile Include="WSDLOperationParser.cpp" />
+    <ClCompile Include="WSDLParser.cpp" />
+    <ClCompile Include="WSDLPort.cpp" />
+    <ClCompile Include="WSDLPortTypeIO.cpp" />
+    <ClCompile Include="WSDLPortTypeParser.cpp" />
+    <ClCompile Include="WSDLServiceParser.cpp" />
+    <ClCompile Include="WSDLServicePortParser.cpp" />
+    <ClCompile Include="WSDLSoapElement.cpp" />
+    <ClCompile Include="WSDLTypesParser.cpp" />
+    <ClCompile Include="XMLDocParser.cpp" />
+    <ClCompile Include="XMLDocument.cpp" />
+    <ClCompile Include="XMLElement.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Attribute.h" />
+    <ClInclude Include="AttributeParser.h" />
+    <ClInclude Include="CodeTypeBuilder.h" />
+    <ClInclude Include="CodeTypes.h" />
+    <ClInclude Include="ComplexType.h" />
+    <ClInclude Include="ComplexTypeParser.h" />
+    <ClInclude Include="Content.h" />
+    <ClInclude Include="ContentParser.h" />
+    <ClInclude Include="CppCodeGenerator.h" />
+    <ClInclude Include="CppKeywordTable.h" />
+    <ClInclude Include="DiscoMapDocument.h" />
+    <ClInclude Include="DiscoMapParser.h" />
+    <ClInclude Include="Element.h" />
+    <ClInclude Include="ElementParser.h" />
+    <ClInclude Include="Emit.h" />
+    <ClInclude Include="errordefs.h" />
+    <ClInclude Include="ErrorHandler.h" />
+    <ClInclude Include="Namespaces.h" />
+    <ClInclude Include="Parser.h" />
+    <ClInclude Include="QName.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Schema.h" />
+    <ClInclude Include="SchemaDocument.h" />
+    <ClInclude Include="SchemaParser.h" />
+    <ClInclude Include="SimpleType.h" />
+    <ClInclude Include="SimpleTypeParser.h" />
+    <ClInclude Include="SkipParser.h" />
+    <ClInclude Include="SproxyColl.h" />
+    <ClInclude Include="SproxyError.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="Util.h" />
+    <ClInclude Include="WSDLBinding.h" />
+    <ClInclude Include="WSDLBindingParser.h" />
+    <ClInclude Include="WSDLDocument.h" />
+    <ClInclude Include="WSDLMessage.h" />
+    <ClInclude Include="WSDLMessageParser.h" />
+    <ClInclude Include="WSDLMessagePart.h" />
+    <ClInclude Include="WSDLOperationIOParser.h" />
+    <ClInclude Include="WSDLOperationParser.h" />
+    <ClInclude Include="WSDLParser.h" />
+    <ClInclude Include="WSDLPort.h" />
+    <ClInclude Include="WSDLPortType.h" />
+    <ClInclude Include="WSDLPortTypeIO.h" />
+    <ClInclude Include="WSDLPortTypeOperation.h" />
+    <ClInclude Include="WSDLPortTypeParser.h" />
+    <ClInclude Include="WSDLService.h" />
+    <ClInclude Include="WSDLServiceParser.h" />
+    <ClInclude Include="WSDLServicePortParser.h" />
+    <ClInclude Include="WSDLSoapElement.h" />
+    <ClInclude Include="WSDLType.h" />
+    <ClInclude Include="WSDLTypesParser.h" />
+    <ClInclude Include="XMLDataTypes.h" />
+    <ClInclude Include="XMLDocParser.h" />
+    <ClInclude Include="XMLDocument.h" />
+    <ClInclude Include="XMLElement.h" />
+    <ClInclude Include="XSDElement.h" />
+    <ClInclude Include="XSDMappingTable.h" />
+    <ClInclude Include="XSDPrimitive.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="sproxy.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cppkeywords.in" />
+    <None Include="facets.in" />
+    <None Include="sproxy.srf">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="xsdtypes.in" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
