@@ -1870,7 +1870,7 @@ inline HRESULT CPerfMon::Initialize() throw()
 
 		// create a mutex to handle syncronizing access to the shared memory area
 		CString strMutexName;
-		strMutexName.Format(_T("Global\\ATLPERF_%s_LOCK"), strAppName);
+		strMutexName.Format(_T("Global\\ATLPERF_%s_LOCK"), (LPCSTR)strAppName);
 		tempLock.Create(&sa, FALSE, strMutexName);
 		if (tempLock.m_h == NULL)
 			return AtlHresultFromLastError();
