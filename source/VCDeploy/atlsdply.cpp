@@ -68,22 +68,6 @@ static BOOL CALLBACK _EnumResLangProc(HMODULE /*hModule*/, LPCTSTR /*pszType*/,
 
 	return TRUE;
 }
-//////////////////////////////////////////////////////////////////////////
-//Purpose: GetUserDefaultUILanguage for downlevel platforms (Win9x, NT4).
-//Input: szDllName - the string resource dll name to search. Ex: ToolUI.dll 
-//Output: TCHAR *szPathOut - filled with absolute path to dll, if found.
-//		  size_t sizeInCharacters - buffer size in characters
-//Returns: Success - HMODULE of found dll, Failure - NULL
-//////////////////////////////////////////////////////////////////////////
-HRESULT GetUserDefaultUILanguageLegacyCompat(LANGID* pLangid)
-{
-    if (pLangid == nullptr)
-    {
-        return E_POINTER;
-    }
-    *pLangid = GetUserDefaultUILanguage();
-    return S_OK;
-}
 
 //////////////////////////////////////////////////////////////////////////
 //Purpose: Searches for a resource dll in sub directories using a search order
@@ -135,11 +119,7 @@ HRESULT LoadUILibrary(LPCTSTR szPath, LPCTSTR szDllName, DWORD dwExFlags,
     pathEnd = _TCSNLEN(szPathTemp, _MAX_PATH-1);
     
     {	        
-		LANGID langid=0;
-		if (FAILED(GetUserDefaultUILanguageLegacyCompat(&langid)))
-		{
-			return E_UNEXPECTED;
-		}
+		LANGID langid = GetUserDefaultUILanguage();
         const LCID lcidUser = MAKELCID(langid, SORT_DEFAULT);
         
         LCID rglcid[3];
