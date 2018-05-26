@@ -301,10 +301,7 @@ HMODULE LoadSearchPath(LPCTSTR szDllName,TCHAR *szPathOut, size_t sizeInCharacte
 			}
         }
     }
-	if (szEnvPATHBuff!= nullptr)
-	{
-		free(szEnvPATHBuff);
-	}
+	free(szEnvPATHBuff);
     return hmod;
 }
 //Example: Say PATH="c:\bin;d:\win", resource dll name (szDllName) is "ToolUI.dll",
