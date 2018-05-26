@@ -35,27 +35,19 @@
 	#define ATLSOAP_BASE64_FLAGS ATL_BASE64_FLAG_NONE
 #endif // ATLSOAP_BASE64_FLAGS
 
-#ifndef _WIN32_WCE
 [ emitidl(restricted) ];
-#endif // _WIN32_WCE
 #include <winsock2.h>
 #include <atlstr.h>
 #include <atlcoll.h>
 #include <atlbase.h>
 #include <msxml2.h>
 #include <atlenc.h>
-#ifndef _WIN32_WCE
 #include <fcntl.h>
-#else
-#include <altcecrt.h>
-#endif // _WIN32_WCE
 #include <float.h>
 #include <math.h>
 #include <limits>
 #include <atlisapi.h>
-#ifndef _WIN32_WCE
 #include <atlstencil.h>
-#endif // _WIN32_WCE
 #include <atlhttp.h>
 #include <atlhttp.inl>
 
@@ -76,9 +68,7 @@
 #endif
 
 #ifndef _ATL_NO_DEFAULT_LIBS
-#ifndef _WIN32_WCE
 #pragma comment(lib, "msxml2.lib")
-#endif // _WIN32_WCE
 	#ifndef ATLSOAP_NOWININET
 		#pragma comment(lib, "wininet.lib")
 	#endif
@@ -92,7 +82,6 @@
 namespace ATL
 {
 
-#ifndef _WIN32_WCE
 ATL_NOINLINE inline void AtlSoapTraceXML(LPBYTE pdwData, DWORD dwLen)
 {
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -112,7 +101,6 @@ ATL_NOINLINE inline void AtlSoapTraceXML(LPBYTE pdwData, DWORD dwLen)
 			&dwWritten, NULL);
 	}
 }
-#endif // _WIN32_WCE
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -534,9 +522,7 @@ inline const wchar_t *SkipWhitespace(const wchar_t *wsz)
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WIN32_WCE
 [ export ]
-#endif // _WIN32_WCE
 typedef struct _tagATLSOAP_BLOB
 {
 	unsigned long size;
@@ -8124,9 +8110,6 @@ public:
 
 }; // class _CSDLGenerator
 
-#if defined(_WIN32_WCE) && !defined(_CE_DCOM) && !defined(_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA)
-	#error atlsoap.h requires Windows CE platform to have DCOM support or _CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA needs to be defined.
-#endif
 
 template <class THandler, const char *szHandlerName>
 class CSDLGenerator :

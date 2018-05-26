@@ -13,9 +13,6 @@
 
 #pragma once
 
-#ifdef _WIN32_WCE
-	#error atlmime.h is not supported on Windows CE (_WIN32_WCE is defined)
-#endif //_WIN32_WCE
 
 #include <tchar.h>
 #include <time.h>

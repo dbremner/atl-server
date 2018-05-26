@@ -13,9 +13,6 @@
 
 #pragma once
 
-#ifdef _WIN32_WCE
-	#error atlsmtpconnection.h is not supported on Windows CE (_WIN32_WCE is defined)
-#endif //_WIN32_WCE
 
 #ifndef _ATL_NO_DEFAULT_LIBS
 #pragma comment(lib, "ws2_32.lib")

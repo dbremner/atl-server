@@ -16,17 +16,11 @@
 #include <atltime.h>
 #include <atlutil.h>
 #include <atlcoll.h>
-#ifndef _WIN32_WCE
 #include <atlperf.h>
-#else // _WIN32_WCE
-#include <atlbase.h>
-#endif // _WIN32_WCE
 #include <atlcom.h>
 #include <atlstr.h>
 #include <atlsrvres.h>
-#ifndef _WIN32_WCE
 #include <atldbcli.h>
-#endif // _WIN32_WCE
 #include <atlspriv.h>
 #include <atlutil.h>
 
@@ -2643,7 +2637,6 @@ struct CCacheDataPeer : public CCacheDataBase
 	typename Peer::PeerInfo PeerData; 
 };
 
-#ifndef _WIN32_WCE
 
 // A class to keep track of files, with maintenance -- maximum size of cache,
 // maximum number of entries, expiration of entries, etc. -- inherits from
@@ -3034,7 +3027,6 @@ public:
 	}
 }; // CFileCache
 
-#endif // _WIN32_WCE
 
 #ifdef __ATLDBCLI_H__
 

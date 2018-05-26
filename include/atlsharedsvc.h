@@ -13,9 +13,6 @@
 
 #pragma once
 
-#ifdef _WIN32_WCE
-	#error atlsharedsvc.h is not supported on Windows CE (_WIN32_WCE is defined)
-#endif //_WIN32_WCE
 
 #include <atltime.h>
 #include <atlsoap.h>

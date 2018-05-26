@@ -11,9 +11,7 @@
 #ifndef __ATLHTTP_INL__
 #define __ATLHTTP_INL__
 
-#ifndef _WIN32_WCE
 #include <errno.h>
-#endif // _WIN32_WCE
 
 #pragma warning(push)
 #pragma warning(disable: 4061) // enumerate 'enum value' in switch of enum 'enum type' is not explicitly handled by a case label
@@ -722,14 +720,7 @@ inline unsigned char* CAtlHttpClientT<TSocketClass>::FindHeaderEnd(unsigned char
 	// look for the end of the header (the \r\n\r\n)
 	while (pCurr <= (pBegin + nLen - ATL_HEADER_END_LEN))
 	{
-#ifndef _WIN32_WCE
 		if (* ((UNALIGNED  DWORD*)pCurr)==ATL_DW_HEADER_END)
-#else
-		if ((*pCurr == '\r') &&
-			(*(pCurr+1) == '\n') &&
-			(*(pCurr+2) == '\r') &&
-			(*(pCurr+3) == '\n'))
-#endif // !_WIN32_WCE
 		{
 			// set m_pCurrent pointer to the end of the header
 			m_pCurrent = pCurr + ATL_HEADER_END_LEN;
@@ -1206,7 +1197,6 @@ inline bool CAtlHttpClientT<TSocketClass>::DisconnectIfRequired() throw()
 
 	return true;
 }
-#if !defined(_WIN32_WCE)
 class CInitializeCOMThread
 {
 public:
@@ -1237,13 +1227,11 @@ protected:
 	BOOL m_bCoInit;
 	BOOL m_bShouldUninit;
 };
-#endif // !defined(_WIN32_WCE)
 
 // Tries to find an authorization object that meets
 template<class TSocketClass>
 inline bool CAtlHttpClientT<TSocketClass>::NegotiateAuth(bool bProxy) throw()
 {
-#if !defined(_WIN32_WCE)
 	//Test if can silently pass user credentials to server.
 	if (!m_bSilentLogonOk)
 	{	
@@ -1293,7 +1281,6 @@ inline bool CAtlHttpClientT<TSocketClass>::NegotiateAuth(bool bProxy) throw()
 			return false;
 		}
 	}
-#endif // !defined(_WIN32_WCE)
 
 	// szAuthHeaderValue should contain a comma separated list
 	// of authentication types

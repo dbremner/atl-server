@@ -550,7 +550,6 @@ public:
 		return S_OK;
 	}
 
-#ifndef _WIN32_WCE
 #pragma warning(push)
 #pragma warning(disable : 4793)
 	HRESULT WriteFormatted(LPCTSTR szFormat, ...)
@@ -585,7 +584,6 @@ public:
 		return E_UNEXPECTED;
 	}
 #pragma warning(pop)
-#endif // _WIN32_WCE
 };
 
 template <typename TData, int nMax=64>

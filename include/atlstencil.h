@@ -31,9 +31,7 @@
 #endif
 
 #ifndef _ATL_NO_DEFAULT_LIBS
-#ifndef _WIN32_WCE
 #pragma comment(lib, "shlwapi.lib")
-#endif // _WIN32_WCE
 #endif // !_ATL_NO_DEFAULT_LIBS
 
 #pragma warning( push )
@@ -49,7 +47,6 @@
 #pragma pack(push,_ATL_PACKING)
 namespace ATL {
 
-#ifndef _WIN32_WCE
 
 // Token types
 // These tags are token tags for the standard tag replacer implementation
@@ -68,7 +65,6 @@ extern __declspec(selectany) const DWORD STENCIL_CODEPAGE            = 0x0000000
 // The base for user defined token types
 extern __declspec(selectany) const DWORD STENCIL_USER_TOKEN_BASE     = 0x00001000;
 
-#endif // _WIN32_WCE
 
 // Symbols to use in error handling in the stencil processor
 #define STENCIL_INVALIDINDEX            0xFFFFFFFF
@@ -618,42 +614,28 @@ public:
 		ATLENSURE( szParams != NULL );
 		ATLENSURE( ppParam != NULL );
 
-#ifndef _WIN32_WCE
 		errno_t errnoValue = 0;
-#endif //!_WIN32_WCE
 		*ppParam = (float *) pMemMgr->Allocate(sizeof(float));
 		if (*ppParam)
 		{
-#ifndef _WIN32_WCE
 			errno_t saveErrno = Checked::get_errno();
 			Checked::set_errno(0);
 			**ppParam = (float) atof(szParams);
 			errnoValue = Checked::get_errno();
 			Checked::set_errno(saveErrno);
-#else
-			**ppParam = (float) atof(szParams);
-#endif //!_WIN32_WCE
 		}
 		else
 		{
 			return AtlsHttpError(500, ISE_SUBERR_OUTOFMEM);
 		}
-#ifndef _WIN32_WCE
 		if ((**ppParam == -HUGE_VAL) || (**ppParam == HUGE_VAL) || (errnoValue == ERANGE))
 		{
 			return HTTP_FAIL;
 		}
-#else // _WIN32_WCE
-		if ((*pVal == -HUGE_VAL) || (*pVal == HUGE_VAL))
-		{
-			return HTTP_FAIL;
-		}
-#endif // _WIN32_WCE
 		return HTTP_SUCCESS;
 	}
 };
 
-#ifndef _WIN32_WCE
 
 inline LPCSTR SkipSpace(LPCSTR sz, WORD nCodePage) throw()
 {
@@ -4165,7 +4147,6 @@ public:
 	}
 }; // class CRequestHandlerT
 
-#endif // _WIN32_WCE
 
 } // namespace ATL
 #pragma pack(pop)
