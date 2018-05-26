@@ -93,7 +93,7 @@ HRESULT CWSDLMessagePart::GetType(CXSDElement **ppElement, XSDTYPE *pXSD)
 					// treat their custom types as strings
 					*pXSD = XSDTYPE_STRING;
 					EmitFileWarning(IDS_SDL_CUSTOM_TYPE, const_cast<CWSDLMessagePart *>(this), 0,
-						strUri, m_type.GetName());
+                        (LPCWSTR)strUri, (LPCWSTR)m_type.GetName());
 				}
 				else
 				{
@@ -127,11 +127,11 @@ HRESULT CWSDLMessagePart::GetType(CXSDElement **ppElement, XSDTYPE *pXSD)
 
 	if (strUri.GetLength() == 0)
 	{
-		EmitFileError(IDS_SDL_UNRESOLVED_NAMESPACE, const_cast<CWSDLMessagePart *>(this), 0, m_type.GetPrefix());
+		EmitFileError(IDS_SDL_UNRESOLVED_NAMESPACE, const_cast<CWSDLMessagePart *>(this), 0, (LPCWSTR)m_type.GetPrefix());
 	}
 	else
 	{
-		EmitFileError(IDS_SDL_UNRESOLVED_ELEM2, const_cast<CWSDLMessagePart *>(this), 0, "part", strUri, m_type.GetName());
+		EmitFileError(IDS_SDL_UNRESOLVED_ELEM2, const_cast<CWSDLMessagePart *>(this), 0, "part", (LPCWSTR)strUri, (LPCWSTR)m_type.GetName());
 	}
 	return E_FAIL;
 }

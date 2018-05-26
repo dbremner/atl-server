@@ -39,13 +39,13 @@ CWSDLPortType * CWSDLBinding::GetPortType()
 				if (m_pPortType == NULL)
 				{
 					EmitFileError(IDS_SDL_UNRESOLVED_ELEM2, const_cast<CWSDLBinding *>(this), 0, 
-						"portType", strUri, m_type.GetName());
+						"portType", (LPCWSTR)strUri, (LPCWSTR)m_type.GetName());
 				}
 			}
 		}
 		else
 		{
-			EmitFileError(IDS_SDL_UNRESOLVED_NAMESPACE, const_cast<CWSDLBinding *>(this), 0, m_type.GetPrefix());
+			EmitFileError(IDS_SDL_UNRESOLVED_NAMESPACE, const_cast<CWSDLBinding *>(this), 0, (LPCWSTR)m_type.GetPrefix());
 		}
 	}
 

@@ -1313,7 +1313,7 @@ HRESULT CCodeTypeBuilder::ProcessComplexType(
         if (m_currParse.Lookup(pType) != NULL)
         {
             // recursive types are not supported
-            EmitFileError(IDS_SDL_RECURSIVE_TYPE, pType, 0, pType->GetParentSchema()->GetTargetNamespace(), pType->GetName());
+            EmitFileError(IDS_SDL_RECURSIVE_TYPE, pType, 0, (LPCWSTR)pType->GetParentSchema()->GetTargetNamespace(), (LPCWSTR)pType->GetName());
 
             return E_FAIL;
         }
@@ -1663,8 +1663,8 @@ HRESULT CCodeTypeBuilder::GetTypeFromElement(
         if (FAILED(hr))
         {
             EmitFileError(IDS_SDL_UNRESOLVED_ELEM, pElem, 0,
-                pElem->GetParentSchema()->GetTargetNamespace(),
-                pElem->GetTypeName().GetName());
+                (LPCWSTR)pElem->GetParentSchema()->GetTargetNamespace(),
+                (LPCWSTR)pElem->GetTypeName().GetName());
         }
     }
     if (pElem->GetArrayType() == cStrMinMaxOccursArray)
@@ -1700,7 +1700,7 @@ HRESULT CCodeTypeBuilder::ProcessXSDElement(
             // treat their custom types as strings
             pCodeElem->SetXSDType(XSDTYPE_STRING);
             EmitFileWarning(IDS_SDL_CUSTOM_TYPE, pElem, 0,
-                strUri, typeName.GetName());
+                (LPCWSTR)strUri, (LPCWSTR)typeName.GetName());
             return S_OK;
         }
         XSDTYPE xsdType;
@@ -1712,7 +1712,7 @@ HRESULT CCodeTypeBuilder::ProcessXSDElement(
         }
     }
 
-    EmitFileError(IDS_SDL_UNRESOLVED_ELEM, pElem, 0, strUri, typeName.GetName());
+    EmitFileError(IDS_SDL_UNRESOLVED_ELEM, pElem, 0, (LPCWSTR)strUri, (LPCWSTR)typeName.GetName());
 
     return E_FAIL;
 }
@@ -1944,7 +1944,7 @@ HRESULT CCodeTypeBuilder::GetCallFlags(
     {
         if (pBody->GetEncodingStyle() != SOAP_ENCODINGSTYLEW)
         {
-            EmitFileError(IDS_SDL_ENCODINGSTYLE, pBody, 0, pBody->GetEncodingStyle());
+            EmitFileError(IDS_SDL_ENCODINGSTYLE, pBody, 0, (LPCWSTR)pBody->GetEncodingStyle());
             return E_FAIL;
         }
 
@@ -2313,8 +2313,8 @@ HRESULT CCodeTypeBuilder::GetTypeFromQName(
     if (FAILED(hr))
     {
         EmitFileError(IDS_SDL_UNRESOLVED_ELEM, pXSDElement, 0,
-            strUri,
-            type.GetName());
+            (LPCWSTR)strUri,
+            (LPCWSTR)type.GetName());
     }
     return hr;
 }
@@ -2477,7 +2477,7 @@ HRESULT CCodeTypeBuilder::ProcessSoapHeaders(
                 if (SUCCEEDED(GetElementInfo(pHeader, pHeader->GetMessageName(), strUri)))
                 {
                     EmitFileError(IDS_SDL_UNRESOLVED_MSGPART, pHeader, 0,
-                        pHeader->GetParts(), strUri, pHeader->GetMessageName().GetName());
+                        (LPCWSTR)pHeader->GetParts(), (LPCWSTR)strUri, (LPCWSTR)pHeader->GetMessageName().GetName());
                 }
                 else
                 {
@@ -2516,7 +2516,7 @@ HRESULT CCodeTypeBuilder::CheckDuplicateHeaders(CCodeFunction *pCodeFunc, CCodeT
         {
             CStringW strUri;
             EmitFileError(IDS_SDL_SOAPHEADER_DUPNAME, pElem->GetElement(), 0,
-                pElem->GetElement()->GetParentSchema()->GetTargetNamespace(), pElem->GetName());
+                (LPCWSTR)pElem->GetElement()->GetParentSchema()->GetTargetNamespace(), (LPCWSTR)pElem->GetName());
             return E_FAIL;
         }
     }

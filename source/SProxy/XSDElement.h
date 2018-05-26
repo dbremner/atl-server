@@ -211,7 +211,7 @@ inline HRESULT GetXSDType(const CStringW& strUri, const CStringW& strName, XSDTY
 		}
 		else // (pNode == NULL)
 		{
-			EmitError(IDS_SDL_UNRESOLVED_ELEM, strUri, strName);
+			EmitError(IDS_SDL_UNRESOLVED_ELEM, (LPCWSTR)strUri, (LPCWSTR)strName);
 			return E_FAIL;
 		}
 	}

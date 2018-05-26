@@ -637,9 +637,9 @@ int sproxy()
 					(hr == E_SAX_PATHNOTFOUND) ||
 					(hr == E_SAX_ACCESSDENIED))
 				{
-					EmitError(IDS_SDL_FAILED_DM_OPEN, wszUrl);
+					EmitError(IDS_SDL_FAILED_DM_OPEN, (LPCWSTR)wszUrl);
 				}
-				EmitError(IDS_SDL_PROCESS_DM_FAILURE, wszUrl);
+				EmitError(IDS_SDL_PROCESS_DM_FAILURE, (LPCWSTR)wszUrl);
 				return 1;
 			}
 		}
@@ -717,9 +717,9 @@ int sproxy()
 			    (hr == E_SAX_PATHNOTFOUND) ||
 			    (hr == E_SAX_ACCESSDENIED))
 			{
-				EmitError(IDS_SDL_FAILED_WSDL_OPEN, g_wszFile);
+				EmitError(IDS_SDL_FAILED_WSDL_OPEN, (LPCWSTR)g_wszFile);
 			}
-			EmitError(IDS_SDL_PROCESS_FAILURE, g_wszFile);
+			EmitError(IDS_SDL_PROCESS_FAILURE, (LPCWSTR)g_wszFile);
 			return 1;
 		}
 
@@ -747,7 +747,7 @@ int sproxy()
 			wszOut.Append(L".h", 2);
 		}
 
-		Emit(IDS_SDL_SUCCESS, wszOut);
+		Emit(IDS_SDL_SUCCESS, (LPCWSTR)wszOut);
 		CComObjectStack<CCppCodeGenerator> gen;
 		hr = gen.Generate(wszOut, &proxy, 
 				(nFlags & SPROXYFLAG_NOPRAGMA) ? false : true, 

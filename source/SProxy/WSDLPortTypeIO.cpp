@@ -36,14 +36,14 @@ CWSDLMessage * CWSDLPortTypeIO::GetMessage()
 					if (m_pMessage == NULL)
 					{
 						EmitFileError(IDS_SDL_UNRESOLVED_ELEM2, const_cast<CWSDLPortTypeIO *>(this), 0,
-							"message", strUri, m_message.GetName());
+							"message", (LPCWSTR)strUri, (LPCWSTR)m_message.GetName());
 					}
 				}
 			}
 		}
 		else
 		{
-			EmitFileError(IDS_SDL_UNRESOLVED_NAMESPACE, const_cast<CWSDLPortTypeIO *>(this), 0, m_message.GetPrefix());
+			EmitFileError(IDS_SDL_UNRESOLVED_NAMESPACE, const_cast<CWSDLPortTypeIO *>(this), 0, (LPCWSTR)m_message.GetPrefix());
 		}
 	}
 

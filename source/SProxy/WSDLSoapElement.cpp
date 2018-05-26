@@ -32,7 +32,7 @@ CWSDLMessage * CWSDLSoapHeaderElement::GetMessage()
 					if (m_pMessage == NULL)
 					{
 						EmitFileError(IDS_SDL_UNRESOLVED_ELEM2, const_cast<CWSDLSoapHeaderElement *>(this), 0,
-							"message", strUri, m_message.GetName());
+							"message", (LPCWSTR)strUri, (LPCWSTR)m_message.GetName());
 					}
 				}
 			}
@@ -40,7 +40,7 @@ CWSDLMessage * CWSDLSoapHeaderElement::GetMessage()
 		else
 		{
 			EmitFileError(IDS_SDL_UNRESOLVED_NAMESPACE, const_cast<CWSDLSoapHeaderElement *>(this), 0,
-				m_message.GetPrefix());
+                (LPCWSTR)m_message.GetPrefix());
 		}
 	}
 

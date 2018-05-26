@@ -93,7 +93,7 @@ const wchar_t * CElement::GetTargetNamespace()
 //		}
 	}
 
-	EmitFileError(IDS_SDL_UNRESOLVED_NAMESPACE, const_cast<CElement*>(this), 0, m_type.GetPrefix());
+	EmitFileError(IDS_SDL_UNRESOLVED_NAMESPACE, const_cast<CElement*>(this), 0, (LPCWSTR)m_type.GetPrefix());
 
 	return NULL;
 }
