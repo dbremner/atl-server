@@ -19,9 +19,9 @@ errno_t __cdecl DuplicateEnvString(TCHAR **_PBuffer, size_t *_PBufferSizeInBytes
     size_t size;
 
     /* validation section */
-	if (_PBuffer == NULL) { return  EINVAL; }
-    *_PBuffer = NULL;
-    if (_PBufferSizeInBytes != NULL)
+	if (_PBuffer == nullptr) { return  EINVAL; }
+    *_PBuffer = nullptr;
+    if (_PBufferSizeInBytes != nullptr)
     {
         *_PBufferSizeInBytes = 0;
     }
@@ -31,20 +31,20 @@ errno_t __cdecl DuplicateEnvString(TCHAR **_PBuffer, size_t *_PBufferSizeInBytes
     __pragma(warning(disable:4996))
     str = getenv(_VarName);
     __pragma(warning(pop))
-    if (str == NULL)
+    if (str == nullptr)
     {
         return 0;
     }
 
     size = _tcslen(str) + 1;
     *_PBuffer = (char*)malloc(size * sizeof(TCHAR));
-    if (*_PBuffer == NULL)
+    if (*_PBuffer == nullptr)
     {
         return ENOMEM;
     }
     
     _tcscpy_s(*_PBuffer, size, str);
-    if (_PBufferSizeInBytes != NULL)
+    if (_PBufferSizeInBytes != nullptr)
     {
         *_PBufferSizeInBytes = size;
     }
@@ -78,11 +78,11 @@ static BOOL CALLBACK _EnumResLangProc(HMODULE /*hModule*/, LPCTSTR /*pszType*/,
 HRESULT GetUserDefaultUILanguageLegacyCompat(LANGID* pLangid)
 {
 	HRESULT hr=E_FAIL;	
-	if (pLangid == NULL) { return E_POINTER; }
+	if (pLangid == nullptr) { return E_POINTER; }
 	PFNGETUSERDEFAULTUILANGUAGE pfnGetUserDefaultUILanguage;	
 	HINSTANCE hKernel32 = ::GetModuleHandle(_T("kernel32.dll"));
 	pfnGetUserDefaultUILanguage = (PFNGETUSERDEFAULTUILANGUAGE)::GetProcAddress(hKernel32, "GetUserDefaultUILanguage");
-	if(pfnGetUserDefaultUILanguage != NULL)
+	if(pfnGetUserDefaultUILanguage != nullptr)
 	{
 		*pLangid = pfnGetUserDefaultUILanguage();
 		hr = S_OK;
@@ -110,15 +110,15 @@ HRESULT LoadUILibrary(LPCTSTR szPath, LPCTSTR szDllName, DWORD dwExFlags,
     size_t pathEnd;
 
     // Gotta have this stuff!
-	if (szPath==NULL || *szPath == '\0')	   { return E_POINTER; }
-    if (szDllName==NULL || *szDllName == '\0') { return E_POINTER; }
+	if (szPath== nullptr || *szPath == '\0')	   { return E_POINTER; }
+    if (szDllName== nullptr || *szDllName == '\0') { return E_POINTER; }
 
     if (!szPath || !*szPath || !szDllName || !*szDllName)
         return E_INVALIDARG;
 
-    if (phinstOut != NULL)
+    if (phinstOut != nullptr)
     {
-        *phinstOut = NULL;
+        *phinstOut = nullptr;
     }
 
     szPathTemp[_MAX_PATH-1] = L'\0';
@@ -245,9 +245,9 @@ Done:
         // Beware!  A dll loaded with LOAD_LIBRARY_AS_DATAFILE won't
         // let you use LoadIcon and things like that (only general calls like
         // FindResource and LoadResource).
-        if (phinstOut != NULL)
+        if (phinstOut != nullptr)
         {
-            *phinstOut = LoadLibraryEx(szPathTemp, NULL, dwExFlags);
+            *phinstOut = LoadLibraryEx(szPathTemp, nullptr, dwExFlags);
             hr = (*phinstOut) ? S_OK : E_FAIL;
         }
         if ( szFullPathOut )
@@ -271,14 +271,14 @@ Done:
 //////////////////////////////////////////////////////////////////////////
 HMODULE LoadSearchPath(LPCTSTR szDllName,TCHAR *szPathOut, size_t sizeInCharacters)
 {
-    TCHAR * szEnvPATH = NULL;
-	TCHAR * szEnvPATHBuff = NULL;
+    TCHAR * szEnvPATH = nullptr;
+	TCHAR * szEnvPATHBuff = nullptr;
     TCHAR szPath[_MAX_PATH+1];
     TCHAR * ptry;
     int pathlen;
     int nPathIndex = 0;
-    HMODULE hmod = NULL;	
-    if (DuplicateEnvString(&szEnvPATHBuff,NULL,_T("PATH"))==0 && (szEnvPATH=szEnvPATHBuff) != NULL) 
+    HMODULE hmod = nullptr;	
+    if (DuplicateEnvString(&szEnvPATHBuff, nullptr,_T("PATH"))==0 && (szEnvPATH=szEnvPATHBuff) != nullptr) 
 	{
         while (*szEnvPATH) 
 		{
@@ -314,14 +314,14 @@ HMODULE LoadSearchPath(LPCTSTR szDllName,TCHAR *szPathOut, size_t sizeInCharacte
 			}
 
             LoadUILibrary(szPath, szDllName, LOAD_LIBRARY_AS_DATAFILE, 
-                          &hmod, szPathOut,sizeInCharacters, NULL);
+                          &hmod, szPathOut,sizeInCharacters, nullptr);
             if ( hmod )
 			{
                 break;
 			}
         }
     }
-	if (szEnvPATHBuff!=NULL)
+	if (szEnvPATHBuff!= nullptr)
 	{
 		free(szEnvPATHBuff);
 	}
@@ -343,13 +343,13 @@ HMODULE LoadSearchPath(LPCTSTR szDllName,TCHAR *szPathOut, size_t sizeInCharacte
 //			Note: The primary lang (without the sublang) is tested after the user ui lang.
 // Main Input: szDllName - the name of the resource dll <ToolName>ui.dll. Ex: vcdeployUI.dll
 // Main Output: HMODULE of resource dll or NULL - if not found (see bExeDefaultModule).
-HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFlags=LOAD_LIBRARY_AS_DATAFILE,LPTSTR pszPathOut = NULL,size_t sizeInCharacters = 0  )
+HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFlags=LOAD_LIBRARY_AS_DATAFILE,LPTSTR pszPathOut = nullptr,size_t sizeInCharacters = 0  )
 {
     HMODULE hmod;
     TCHAR driverpath[_MAX_PATH + 1], exepath[_MAX_PATH + 1];
     LPTSTR p;
     
-    GetModuleFileName(GetModuleHandle(NULL), driverpath, _MAX_PATH);
+    GetModuleFileName(GetModuleHandle(nullptr), driverpath, _MAX_PATH);
     // find path of tool
     p = driverpath + _TCSNLEN(driverpath, _MAX_PATH-1)-1;
     while ( *p != L'\\' && p != driverpath)
@@ -359,9 +359,9 @@ HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFl
     *p = '\0';
 
     LoadUILibrary(driverpath, szDllName, dwExFlags, 
-                  &hmod, exepath,_countof(exepath), NULL);
+                  &hmod, exepath,_countof(exepath), nullptr);
 
-    if ( hmod == NULL ) 
+    if ( hmod == nullptr ) 
 	{
         // search PATH\<lcid> for <ToolName>ui.dll
         hmod = LoadSearchPath(szDllName,exepath,_countof(exepath));
@@ -372,9 +372,9 @@ HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFl
         _tcsncpy_s(pszPathOut,sizeInCharacters, exepath, _MAX_PATH-1);
 	}
 	//Not found dll, return the exe HINSTANCE as a fallback.
-	if (hmod == NULL && bExeDefaultModule)
+	if (hmod == nullptr && bExeDefaultModule)
 	{
-		hmod=GetModuleHandle(NULL);
+		hmod=GetModuleHandle(nullptr);
 	}
     return hmod;
 }
@@ -431,7 +431,7 @@ int main(int argc, char* argv[])
 			return 0;
 		}
 
-		hr = CoInitialize(NULL);
+		hr = CoInitialize(nullptr);
 		if (FAILED(hr))
 		{
 			PrintError(IDS_COMINIT_FAILED);

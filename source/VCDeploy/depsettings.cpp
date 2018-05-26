@@ -21,7 +21,7 @@ HRESULT CDepSettings::GetHostList(IXMLDOMNodeList **ppList)
 {
 	if (!ppList)
 		return E_INVALIDARG;
-	*ppList = NULL;
+	*ppList = nullptr;
 	if (m_spHostList)
 		return m_spHostList.CopyTo(ppList);
 	return E_FAIL;
@@ -31,7 +31,7 @@ HRESULT CDepSettings::GetAppMappingList(IXMLDOMNodeList **ppList)
 {
 	if (!ppList)
 		return E_INVALIDARG;
-	*ppList = NULL;
+	*ppList = nullptr;
 	if (m_spAppMappings)
 		return m_spAppMappings.CopyTo(ppList);
 	return S_OK;
@@ -41,7 +41,7 @@ HRESULT CDepSettings::GetFileGroups(IXMLDOMNodeList **ppList)
 {
 	if (!ppList)
 		return E_INVALIDARG;
-	*ppList = NULL;
+	*ppList = nullptr;
 	if (m_spAppFileGroups)
 		return m_spAppFileGroups.CopyTo(ppList);
 	return E_FAIL;
@@ -212,7 +212,7 @@ unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
 			PrintWarning(IDS_ERR_BADAPPISOLATION);
 		else
 		{
-			wchar_t *szEnd = NULL;
+			wchar_t *szEnd = nullptr;
 			short nIso = (short)wcstol(bstrSearch, &szEnd, 10);
 			if (errno == ERANGE || nIso < 0 || nIso > 2)
 			{

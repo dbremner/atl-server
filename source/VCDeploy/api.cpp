@@ -23,7 +23,7 @@ public:
 	HANDLE hMutex;
 	CIISMutex()
 	{
-		hMutex = ::CreateMutex(NULL, FALSE, _T("VC8_VCDEPLOY"));
+		hMutex = ::CreateMutex(nullptr, FALSE, _T("VC8_VCDEPLOY"));
 	}
 	bool Lock()
 	{
@@ -45,7 +45,7 @@ HRESULT AddWebSvcExtention(WCHAR* wszRootWeb6, LPWSTR lpwszFileName,VARIANT_BOOL
 
     CComPtr<IISWebService> spWeb;
     HRESULT hr = ADsGetObject(wszRootWeb6, IID_IISWebService, (void**)&spWeb);
-    if (SUCCEEDED(hr) && spWeb != NULL)
+    if (SUCCEEDED(hr) && spWeb != nullptr)
     {
 		CComVariant var1, var2;
 
@@ -78,9 +78,9 @@ HRESULT RemoveWebSvcExtention(WCHAR* wszRootWeb6, LPWSTR lpwszFileName)
 {
     HRESULT hrRet = S_FALSE;
 
-    IISWebService * pWeb = NULL;
+    IISWebService * pWeb = nullptr;
     HRESULT hr = ADsGetObject(wszRootWeb6, IID_IISWebService, (void**)&pWeb);
-    if (SUCCEEDED(hr) && NULL != pWeb)
+    if (SUCCEEDED(hr) && nullptr != pWeb)
     {
 		CComBSTR bstrFileName(lpwszFileName);
         hr = pWeb->DeleteExtensionFileRecord(bstrFileName);
@@ -102,9 +102,9 @@ HRESULT AddApplicationDependencyUponGroup(WCHAR* wszRootWeb6, LPWSTR lpwszAppNam
 {
     HRESULT hrRet = S_FALSE;
 
-    IISWebService * pWeb = NULL;
+    IISWebService * pWeb = nullptr;
     HRESULT hr = ADsGetObject(wszRootWeb6, IID_IISWebService, (void**)&pWeb);
-    if (SUCCEEDED(hr) && NULL != pWeb)
+    if (SUCCEEDED(hr) && nullptr != pWeb)
     {
 		CComBSTR bstrAppName(lpwszAppName);
 		CComBSTR bstrGroupID(lpwszGroupID);
@@ -127,9 +127,9 @@ HRESULT RemoveApplicationDependencyUponGroup(WCHAR* wszRootWeb6, LPWSTR lpwszApp
 {
     HRESULT hrRet = S_FALSE;
 
-    IISWebService * pWeb = NULL;
+    IISWebService * pWeb = nullptr;
     HRESULT hr = ADsGetObject(wszRootWeb6, IID_IISWebService, (void**)&pWeb);
-    if (SUCCEEDED(hr) && NULL != pWeb)
+    if (SUCCEEDED(hr) && nullptr != pWeb)
     {
 		CComBSTR bstrAppName(lpwszAppName);
 		CComBSTR bstrGroupID(lpwszGroupID);
@@ -160,7 +160,7 @@ LPSTR _ReverseFind(LPSTR szStr, size_t nLen, char ch)
 		--sz;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 BOOL RecursiveCreateDirectoryHelper(LPSTR szPath, size_t nLen)
@@ -178,7 +178,7 @@ BOOL RecursiveCreateDirectoryHelper(LPSTR szPath, size_t nLen)
 			(GetLastError() == ERROR_FILE_NOT_FOUND))
 		{
 			szCurrent = _ReverseFind(szPath, nLen, '\\');
-			if (szCurrent != NULL)
+			if (szCurrent != nullptr)
 			{
 				nLen -= (szPath-szCurrent);
 				chTmp = *szCurrent;
@@ -190,7 +190,7 @@ BOOL RecursiveCreateDirectoryHelper(LPSTR szPath, size_t nLen)
 				}
 
 				*szCurrent = chTmp;
-				bRet = ::CreateDirectory(szPath, NULL);
+				bRet = ::CreateDirectory(szPath, nullptr);
 				// VSW#472354 - There is a race condition where if two projects are 
 				// building at the same time, the deployment of the other can cause 
 				// this directory to get created after we check that it doesn't exist.
@@ -223,7 +223,7 @@ BOOL RecursiveCreateDirectory(LPCSTR szDir)
 
 int PrintWarning(unsigned int nMsgID)
 {
-	return PrintMessage(_T("warning"), nMsgID, NULL);
+	return PrintMessage(_T("warning"), nMsgID, nullptr);
 }
 
 int PrintWarning(unsigned int nMsgID, TCHAR *szExtraInfo)
@@ -235,12 +235,12 @@ int PrintWarningWithLastWin32(unsigned int nMsgID)
 {
 	TCHAR szMsg[512];
 	if (::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,
-					NULL,
+					nullptr,
 					GetLastError(),
 					NULL,
 					szMsg,
 					512,
-					NULL))
+					nullptr))
 	{
 		return PrintWarning(nMsgID, szMsg);
 	}
@@ -249,12 +249,12 @@ int PrintWarningWithLastWin32(unsigned int nMsgID)
 
 int PrintWarningFormatted(LPCTSTR szWarning)
 {
-	return PrintMessage(_T("warning"), szWarning, NULL);
+	return PrintMessage(_T("warning"), szWarning, nullptr);
 }
 
 int PrintError(unsigned int nMsgID)
 {
-	return PrintMessage(_T("error"), nMsgID, NULL);
+	return PrintMessage(_T("error"), nMsgID, nullptr);
 }
 
 int PrintError(unsigned int nMsgID, LPCTSTR szExtraInfo)
@@ -266,12 +266,12 @@ int PrintErrorWithLastWin32(unsigned int nMsgID)
 {
 	TCHAR szMsg[512];
 	if (::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,
-					NULL,
+					nullptr,
 					GetLastError(),
 					NULL,
 					szMsg,
 					512,
-					NULL))
+					nullptr))
 	{
 		return PrintError(nMsgID, szMsg);
 	}
@@ -280,7 +280,7 @@ int PrintErrorWithLastWin32(unsigned int nMsgID)
 
 int PrintErrorFormatted(LPCTSTR szError)
 {
-	return PrintMessage(_T("error"), szError, NULL);
+	return PrintMessage(_T("error"), szError, nullptr);
 }
 
 int PrintMessage(LPCTSTR szPrefix, unsigned int nMsgID, LPCTSTR szExtraInfo)
@@ -465,9 +465,9 @@ int ConfigureRestrictionList(CADSIHelper * /*pAdsHelper*/,
 		LPCTSTR szextfilename = pSettings->GetExtensionFileName();
 
 		// need all of these if we are going to get anywhere!
-		if (szvdfspath == NULL || *szvdfspath == L'\0' ||
-			szextfilename == NULL || *szextfilename == L'\0' ||
-			wszHost == NULL || *wszHost == L'\0')
+		if (szvdfspath == nullptr || *szvdfspath == L'\0' ||
+			szextfilename == nullptr || *szextfilename == L'\0' ||
+			wszHost == nullptr || *wszHost == L'\0')
 		{
 			return ATLSDPLY_SUCCESS;
 		}
@@ -722,13 +722,13 @@ int CreateVRoot(const CComBSTR& bstrHostName,
 		short nIso = (short)pSettings->GetAppIsolation();
 		if( pSettings->SkipVirtDirCreation() )
 		{
-			hr = pAdsHelper->CreateAppOnly(strVirtDirName, nIso, NULL);
+			hr = pAdsHelper->CreateAppOnly(strVirtDirName, nIso, nullptr);
 			RETURN_ON_FAIL2(hr, IDS_ERR_CREATEVROOTFAILED);
 		}
 		else
 		{
 			//ATLASSERT(nIso >= 0 && nIso <= 2);
-			hr = pAdsHelper->CreateVRoot(strVirtDirName, nIso, NULL);
+			hr = pAdsHelper->CreateVRoot(strVirtDirName, nIso, nullptr);
 			RETURN_ON_FAIL2(hr, IDS_ERR_CREATEVROOTFAILED);
 
 			// the path to the root must be set at vroot creation time
@@ -992,8 +992,8 @@ int LocalW3svcReset()
 
 	DWORD dwRet = 0;
 	// open service control manager
-	SC_HANDLE hScm = OpenSCManager(NULL, NULL, SC_MANAGER_CONNECT|SC_MANAGER_ENUMERATE_SERVICE);
-	if (hScm==NULL)
+	SC_HANDLE hScm = OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT|SC_MANAGER_ENUMERATE_SERVICE);
+	if (hScm== nullptr)
 	{
 		PrintErrorWithLastWin32(IDS_FAILEDOPENSCM);
 		return ATLSDPLY_FAIL;
@@ -1001,7 +1001,7 @@ int LocalW3svcReset()
 
 	// open W3SVC
 	SC_HANDLE hW3Svc = OpenService(hScm, _T("W3SVC"), SERVICE_QUERY_STATUS|SERVICE_START|SERVICE_STOP);
-	if (hW3Svc==NULL)
+	if (hW3Svc== nullptr)
 	{
 		PrintErrorWithLastWin32(IDS_FAILEDOPENSVC);
 		CloseServiceHandle(hScm);
@@ -1063,7 +1063,7 @@ int LocalW3svcReset()
 	{
 		printf("starting W3SVC.");
     	ZeroMemory(&svcStatus, sizeof(svcStatus));
-    	if (!StartService(hW3Svc, NULL, NULL))
+    	if (!StartService(hW3Svc, NULL, nullptr))
     	{
     		PrintErrorWithLastWin32(IDS_FAILEDSTARTSVC);
     		CloseServiceHandle(hW3Svc);
@@ -1112,7 +1112,7 @@ int LocalW3svcReset()
 					if (nRetryCount > 50)
 						break;
 					Sleep(100);
-			    	if (!StartService(hW3Svc, NULL, NULL))
+			    	if (!StartService(hW3Svc, NULL, nullptr))
     				{
     					PrintErrorWithLastWin32(IDS_FAILEDSTARTSVC);
     					CloseServiceHandle(hW3Svc);
@@ -1156,7 +1156,7 @@ int UpdateFileSystem(CDepSettings *pSettings)
 
 	if (FSPath.m_strPath.GetLength() != 0 && !FSPath.IsDirectory())
 	{	
-		if (!CreateDirectory(FSPath, NULL))
+		if (!CreateDirectory(FSPath, nullptr))
 		{
 			PrintErrorWithLastWin32(IDS_ERR_CREATING_DIRECTORY);
 			return ATLSDPLY_FAIL;
@@ -1454,7 +1454,7 @@ HRESULT ProcessAccessCheck()
 {
 	try
 	{
-		HANDLE hToken = NULL;
+		HANDLE hToken = nullptr;
 		// Current token will impersonate self
 		if (!ImpersonateSelf(SecurityImpersonation))
 			return 0;
@@ -1493,7 +1493,7 @@ HRESULT GetWWWRootPath(const CStringW strWebHostName,CStringW& strPath)
       strIISPath+=L"/W3SVC";
       HRESULT hr=ADsGetObject(strIISPath.GetString(), IID_IADsContainer, (void**) &spCont);
       CComPtr<IADs> spDeploySite;
-      if (SUCCEEDED(hr) && spCont!=NULL)
+      if (SUCCEEDED(hr) && spCont!= nullptr)
       {
 		CComPtr<IUnknown> spUnk;
         hr=spCont->get__NewEnum(&spUnk);
@@ -1515,7 +1515,7 @@ HRESULT GetWWWRootPath(const CStringW strWebHostName,CStringW& strPath)
 					spDisp = V_DISPATCH(&var);
 					CComPtr<IADs> spADs;                      
 					hr=spDisp.QueryInterface(&spADs);
-					if (SUCCEEDED(hr) && spADs!=NULL)
+					if (SUCCEEDED(hr) && spADs!= nullptr)
 					{                       
 						spDisp.Release();             
 						CComBSTR bstrSchemaClass;
@@ -1546,7 +1546,7 @@ HRESULT GetWWWRootPath(const CStringW strWebHostName,CStringW& strPath)
 		}
       }
 	  hr=E_FAIL;
-      if (spDeploySite!=NULL)
+      if (spDeploySite!= nullptr)
       {
 		CComBSTR bstrWebsitePath;
 		spDeploySite->get_ADsPath(&bstrWebsitePath);
