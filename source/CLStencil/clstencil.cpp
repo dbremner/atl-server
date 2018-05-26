@@ -54,21 +54,6 @@ errno_t __cdecl DuplicateEnvString(TCHAR **ppszBuffer, size_t *pnBufferSizeInTCh
 #define _TCSNLEN(sz,c) (min(_tcslen(sz), c))
 #define PATHLEFT(sz) (_MAX_PATH - _TCSNLEN(sz, (_MAX_PATH-1)) - 1)
 
-typedef LANGID (WINAPI* PFNGETUSERDEFAULTUILANGUAGE)();
-
-static BOOL CALLBACK _EnumResLangProc(HMODULE /*hModule*/, LPCTSTR /*pszType*/, 
-	LPCTSTR /*pszName*/, WORD langid, LONG_PTR lParam)
-{
-	if(lParam == NULL)
-	{
-		return FALSE;
-	}
-		
-	LANGID* plangid = reinterpret_cast< LANGID* >( lParam );
-	*plangid = langid;
-
-	return TRUE;
-}
 //////////////////////////////////////////////////////////////////////////
 //Purpose: GetUserDefaultUILanguage for downlevel platforms (Win9x, NT4).
 //Input: szDllName - the string resource dll name to search. Ex: ToolUI.dll 
@@ -80,65 +65,9 @@ HRESULT GetUserDefaultUILanguageLegacyCompat(LANGID* pLangid)
 {
 	HRESULT hr=E_FAIL;	
 	if (pLangid == NULL) { return E_POINTER; }
-	PFNGETUSERDEFAULTUILANGUAGE pfnGetUserDefaultUILanguage;	
-	HINSTANCE hKernel32 = ::GetModuleHandle(_T("kernel32.dll"));
-	pfnGetUserDefaultUILanguage = (PFNGETUSERDEFAULTUILANGUAGE)::GetProcAddress(hKernel32, "GetUserDefaultUILanguage");
-	if(pfnGetUserDefaultUILanguage != NULL)
-	{
-		*pLangid = pfnGetUserDefaultUILanguage();
-		hr = S_OK;
-	} else
-	{
-		// We're not on an MUI-capable system.
-		OSVERSIONINFO version;
-		memset(&version, 0, sizeof(version));
-		version.dwOSVersionInfoSize = sizeof(version);
-		::GetVersionEx(&version);
-		if( version.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS)
-		{
-			// We're on Windows 9x, so look in the registry for the UI language
-			HKEY hKey = NULL;
-			LONG nResult = ::RegOpenKeyEx(HKEY_CURRENT_USER, 
-				_T( "Control Panel\\Desktop\\ResourceLocale" ), 0, KEY_READ, &hKey);
-			if (nResult == ERROR_SUCCESS)
-			{
-				DWORD dwType;
-				TCHAR szValue[16];
-				ULONG nBytes = sizeof( szValue );
-				nResult = ::RegQueryValueEx(hKey, NULL, NULL, &dwType, LPBYTE( szValue ), 
-					&nBytes );
-				if ((nResult == ERROR_SUCCESS) && (dwType == REG_SZ))
-				{
-					DWORD dwLangID;
-					int nFields = _stscanf_s( szValue, _T( "%x" ), &dwLangID );
-					if( nFields == 1 )
-					{
-						*pLangid = LANGID( dwLangID );
-						hr = S_OK;
-					}
-				}
-
-				::RegCloseKey(hKey);
-			}
-		}
-		else
-		{
-			// We're on NT 4.  The UI language is the same as the language of the version
-			// resource in ntdll.dll
-			HMODULE hNTDLL = ::GetModuleHandle( _T( "ntdll.dll" ) );
-			if (hNTDLL != NULL)
-			{
-				*pLangid = 0;
-				::EnumResourceLanguages( hNTDLL, RT_VERSION, MAKEINTRESOURCE( 1 ), 
-					_EnumResLangProc, reinterpret_cast< LONG_PTR >( pLangid ) );
-				if (*pLangid != 0)
-				{
-					hr = S_OK;
-				}
-			}
-		}
-	}
-	return hr;
+    *pLangid = GetUserDefaultUILanguage();
+    hr = S_OK;
+    return hr;
 }
 
 //////////////////////////////////////////////////////////////////////////
