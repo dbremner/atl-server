@@ -948,7 +948,7 @@ int SetRootAppMappings(	CADSIHelper *pAdsHelper,
 
 #ifdef _DEBUG
 		CString strOut;
-		strOut.Format("Adding mapping %s\n",CW2A(strEntry));
+		strOut.Format("Adding mapping %S\n", (LPCWSTR)strEntry);
 		printf(strOut);
 		ATLTRACE(L"Adding script mapping %s\n", strEntry);
 #endif
