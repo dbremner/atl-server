@@ -55,22 +55,6 @@ errno_t __cdecl DuplicateEnvString(TCHAR **ppszBuffer, size_t *pnBufferSizeInTCh
 #define PATHLEFT(sz) (_MAX_PATH - _TCSNLEN(sz, (_MAX_PATH-1)) - 1)
 
 //////////////////////////////////////////////////////////////////////////
-//Purpose: GetUserDefaultUILanguage for downlevel platforms (Win9x, NT4).
-//Input: szDllName - the string resource dll name to search. Ex: ToolUI.dll 
-//Output: TCHAR *szPathOut - filled with absolute path to dll, if found.
-//		  size_t sizeInCharacters - buffer size in characters
-//Returns: Success - HMODULE of found dll, Failure - NULL
-//////////////////////////////////////////////////////////////////////////
-HRESULT GetUserDefaultUILanguageLegacyCompat(LANGID* pLangid)
-{
-	HRESULT hr=E_FAIL;	
-	if (pLangid == NULL) { return E_POINTER; }
-    *pLangid = GetUserDefaultUILanguage();
-    hr = S_OK;
-    return hr;
-}
-
-//////////////////////////////////////////////////////////////////////////
 //Purpose: Searches for a resource dll in sub directories using a search order
 //		   based on szPath - a directory to search res dll below.
 //		   see example at .
