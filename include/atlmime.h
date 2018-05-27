@@ -529,8 +529,6 @@ public:
 		}
 
 		DWORD dwMaxLen = *pdwLen;
-		*pdwLen = 0;
-
 		DWORD dwLen = 0;
 		DWORD dwTotalLen = 0;
 		if (m_strTo.GetLength() > 0)
