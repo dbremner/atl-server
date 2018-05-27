@@ -641,6 +641,10 @@ protected:
 		IID riid;
 
 		ServiceNode() noexcept
+            :hInst(nullptr),
+            punk(nullptr),
+            guidService(),
+            riid()
 		{
 		}
 
