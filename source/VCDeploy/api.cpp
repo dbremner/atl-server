@@ -21,7 +21,7 @@ class CIISMutex
 {
 public:
 	HANDLE hMutex;
-	CIISMutex()
+	CIISMutex() noexcept
 	{
 		hMutex = ::CreateMutex(nullptr, FALSE, _T("VC8_VCDEPLOY"));
 	}

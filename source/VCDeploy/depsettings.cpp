@@ -8,7 +8,7 @@
 #include "api.h"
 #include <atlutil.h>
 
-CDepSettings::CDepSettings()
+CDepSettings::CDepSettings() noexcept
 {
 	m_bRegIsapi = false;
 	m_bUnloadBeforeCopy = false;

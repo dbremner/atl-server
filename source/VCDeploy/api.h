@@ -355,7 +355,7 @@ protected:
 class CArgs
 {
 public:
-	CArgs()
+	CArgs() noexcept
 	{
 		m_bNoLogo = false;
 		m_bShowUsage = false;
