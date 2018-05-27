@@ -1030,7 +1030,7 @@ public:
 
 		ServiceNode srvNode;
 		memcpy_s(&srvNode.guidService, sizeof(guidService), &guidService, sizeof(guidService));
-		memcpy_s(&srvNode.riid, sizeof(guidService), &riid, sizeof(riid));
+		memcpy_s(&srvNode.riid, sizeof(srvNode.riid), &riid, sizeof(riid));
 		
 		int nIndex = m_serviceMap.Find(srvNode);
 		if (nIndex < 0)
