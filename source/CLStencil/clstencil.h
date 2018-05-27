@@ -98,6 +98,7 @@ public:
 		m_szScriptPathTranslated[0] = '\0';
 		m_szQueryString[0] = '\0';
 		m_szContentType[0] = '\0';
+        m_szPathTranslated[0] = '\0';
 		m_szVerb[0] = '\0';
 		m_bStdInput = false;
 		m_bStdOutput = false;
