@@ -421,9 +421,8 @@ public:
 			return FALSE;
 
 		BOOL	bRet	=	TRUE;
-			
-		LPCSTR szVar;
-		size_t retVal = 0;
+
+	    size_t retVal = 0;
 		size_t bufSize = 0;
 		
 		// retrieve size of buffer
@@ -435,7 +434,7 @@ public:
 
 			bufSize = retVal;
 			getenv_s(&retVal, buf, bufSize, szVariableName);
-			szVar = buf;
+			LPCSTR szVar = buf;
 
 			if( pvBuffer && *pdwSize  > strlen(szVar) )
 				strcpy_s( pvBuffer, bufSize, szVar );
