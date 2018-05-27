@@ -267,7 +267,7 @@ unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
 		else
 		{
 			wchar_t *szEnd = nullptr;
-			short nIso = (short)wcstol(bstrSearch, &szEnd, 10);
+		    auto nIso = (short)wcstol(bstrSearch, &szEnd, 10);
 			if (errno == ERANGE || nIso < 0 || nIso > 2)
 			{
                 PrintWarning(IDS_ERR_INVALIDAPPISOLATION);

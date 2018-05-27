@@ -497,8 +497,8 @@ int ConfigureRestrictionList(CADSIHelper * /*pAdsHelper*/,
 		CStringW strDescription( pSettings->GetVirtDirName() );
 
 		LPWSTR pwszSvc = const_cast<WCHAR*>((LPCWSTR)strSvc);
-		LPWSTR pwszIsapiPath = const_cast<WCHAR*>((LPCWSTR)strIsapiPath);
-		LPWSTR pwszDescription = const_cast<WCHAR*>((LPCWSTR)strDescription);
+	    auto pwszIsapiPath = const_cast<WCHAR*>((LPCWSTR)strIsapiPath);
+	    auto pwszDescription = const_cast<WCHAR*>((LPCWSTR)strDescription);
 
 		// Add strIsapiPath to the restrictionlist, make sure it's enabled, 
 		// and that the user is able to remove the entry thru the UI if they wanted to
@@ -734,7 +734,7 @@ int CreateVRoot(const CComBSTR& bstrHostName,
 		hr = pAdsHelper->Connect(strAdsPathRoot);
 		RETURN_ON_FAIL2(hr, IDS_ERR_CONNECTADSFAILED);
 
-		short nIso = (short)pSettings->GetAppIsolation();
+	    auto nIso = (short)pSettings->GetAppIsolation();
 		if( pSettings->SkipVirtDirCreation() )
 		{
 			hr = pAdsHelper->CreateAppOnly(strVirtDirName, nIso, nullptr);
@@ -1368,7 +1368,7 @@ int RegisterExtension(CADSIHelper* /*pAdsHelper*/,
 	    return IDS_ERR_REGISTERING_EXTENSION;
     }
 
-    PFNRegisterServer pfnRegister = (PFNRegisterServer)GetProcAddress(hInstExtension, _T("DllRegisterServer"));
+    auto pfnRegister = (PFNRegisterServer)GetProcAddress(hInstExtension, _T("DllRegisterServer"));
 	if (pfnRegister)
 	{
 		if (S_OK == pfnRegister())

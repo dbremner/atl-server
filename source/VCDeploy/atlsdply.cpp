@@ -70,7 +70,7 @@ HRESULT LoadUILibrary(LPCTSTR szPath, LPCTSTR szDllName, DWORD dwExFlags,
 {
     TCHAR szPathTemp[_MAX_PATH + 1] = _T("");
     HRESULT hr = E_FAIL;
-    LCID lcidFound = (LCID)-1;
+    auto lcidFound = (LCID)-1;
 
     // Gotta have this stuff!
 	if (szPath== nullptr || *szPath == '\0')	   { return E_POINTER; }
