@@ -17,10 +17,10 @@ public:
 	LPCTSTR GetVirtDirName(){ return m_strVirtDirName; }
 	LPCTSTR GetVirtDirFSPath(){ return m_strVirtDirFSPath; }
 	LPCTSTR GetExtensionFileName(){ return m_strExtFileName; }
-	bool GetRegIsapi(){ return m_bRegIsapi; }
-	bool GetUnloadBeforeCopy(){ return m_bUnloadBeforeCopy; }
-	bool SkipVirtDirCreation(){ return m_bDoNotCreateVirtDir; }
-	int GetAppIsolation(){ return m_nAppIsolation == INVALID_SETTING ? 0 : m_nAppIsolation; }
+	bool GetRegIsapi() const { return m_bRegIsapi; }
+	bool GetUnloadBeforeCopy() const { return m_bUnloadBeforeCopy; }
+	bool SkipVirtDirCreation() const { return m_bDoNotCreateVirtDir; }
+	int GetAppIsolation() const { return m_nAppIsolation == INVALID_SETTING ? 0 : m_nAppIsolation; }
 	short GetIISMajorVer();
 private:
 	CComPtr<IXMLDOMNodeList> m_spHostList;
