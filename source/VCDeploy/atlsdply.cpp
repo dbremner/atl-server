@@ -55,20 +55,6 @@ errno_t __cdecl DuplicateEnvString(TCHAR **_PBuffer, size_t *_PBufferSizeInBytes
 #define _TCSNLEN(sz,c) (min(_tcslen(sz), c))
 #define PATHLEFT(sz) (_MAX_PATH - _TCSNLEN(sz, (_MAX_PATH-1)) - 1)
 
-static BOOL CALLBACK _EnumResLangProc(HMODULE /*hModule*/, LPCTSTR /*pszType*/, 
-	LPCTSTR /*pszName*/, WORD langid, LONG_PTR lParam)
-{
-	if(lParam == NULL)
-	{
-	    return FALSE;
-    }
-
-    LANGID* plangid = reinterpret_cast< LANGID* >( lParam );
-	*plangid = langid;
-
-	return TRUE;
-}
-
 //////////////////////////////////////////////////////////////////////////
 //Purpose: Searches for a resource dll in sub directories using a search order
 //		   based on szPath - a directory to search res dll below.
