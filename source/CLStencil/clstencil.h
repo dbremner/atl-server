@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include "resource.h"
 
-ATL_NOINLINE inline void GetHrErrorDescription(HRESULT hr, CString& strErr) throw()
+ATL_NOINLINE inline void GetHrErrorDescription(HRESULT hr, CString& strErr) noexcept
 {
 	LPTSTR pszMsg = NULL;
 	::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM, NULL, hr, 0, (LPSTR)&pszMsg, 0, NULL);
@@ -105,7 +105,7 @@ public:
 		m_bStdError = false;
 	}
 
-	void LogServerError(LPCSTR szErr) throw()
+	void LogServerError(LPCSTR szErr) noexcept
 	{
 		if (m_ErrFile.m_h == NULL)
 			return;
@@ -150,7 +150,7 @@ public:
 		LPCSTR szErrLog, 
 		LPCSTR szFormFile,
 		LPCSTR szContentType,
-		LPCSTR szVerb) throw()
+		LPCSTR szVerb) noexcept
 	{
 		HRESULT hr;
 
@@ -261,13 +261,13 @@ public:
 		return S_OK;
 	}
 
-	~CSProcServerContext() throw()
+	~CSProcServerContext() noexcept
 	{
 	}
 
 	// Returns the HTTP status code.
 	// Equivalent to EXTENSION_CONTROL_BLOCK::dwHttpStatusCode.
-	DWORD GetHttpStatusCode() throw()
+	DWORD GetHttpStatusCode() noexcept
 	{
 		return 0;
 	}
@@ -275,7 +275,7 @@ public:
 	// Returns a nul-terminated string that contains the HTTP method of the current request.
 	// Examples of common HTTP methods include "GET" and "POST".
 	// Equivalent to the REQUEST_METHOD server variable or EXTENSION_CONTROL_BLOCK::lpszMethod.
-	LPCSTR GetRequestMethod() throw()
+	LPCSTR GetRequestMethod() noexcept
 	{
 		return m_szVerb;
 	}
@@ -283,7 +283,7 @@ public:
 	// Returns a nul-terminated string that contains the query information.
 	// This is the part of the URL that appears after the question mark (?). 
 	// Equivalent to the QUERY_STRING server variable or EXTENSION_CONTROL_BLOCK::lpszQueryString.
-	LPCSTR GetQueryString() throw()
+	LPCSTR GetQueryString() noexcept
 	{
 		return m_szQueryString;
 	}
@@ -291,7 +291,7 @@ public:
 	// Returns a nul-terminated string that contains the path of the current request.
 	// This is the part of the URL that appears after the server name, but before the query string.
 	// Equivalent to the PATH_INFO server variable or EXTENSION_CONTROL_BLOCK::lpszPathInfo.
-	LPCSTR GetPathInfo() throw()
+	LPCSTR GetPathInfo() noexcept
 	{
 		return m_szPathTranslated;
 	}
@@ -305,7 +305,7 @@ public:
 	// The script path is the same as GetPathTranslated up to the first .srf or .dll.
 	// For example, if GetPathTranslated returns "c:\inetpub\vcisapi\hello.srf\goodmorning",
 	// then this function returns "c:\inetpub\vcisapi\hello.srf".
-	LPCSTR GetScriptPathTranslated() throw()
+	LPCSTR GetScriptPathTranslated() noexcept
 	{		
         return m_szScriptPathTranslated;
     }
@@ -313,7 +313,7 @@ public:
 	// Returns a nul-terminated string that contains the translated path of the requested resource.
 	// This is the path of the resource on the local server.
 	// Equivalent to the PATH_TRANSLATED server variable or EXTENSION_CONTROL_BLOCK::lpszPathTranslated.
-	LPCSTR GetPathTranslated() throw()
+	LPCSTR GetPathTranslated() noexcept
 	{
 		return m_szPathTranslated;
 	}
@@ -374,7 +374,7 @@ public:
 	// If this value is 0xffffffff, then there are four gigabytes or more of available data.
 	// In this case, ReadClient or AsyncReadClient should be called until no more data is returned.
 	// Equivalent to the CONTENT_LENGTH server variable or EXTENSION_CONTROL_BLOCK::cbTotalBytes. 
-	DWORD GetTotalBytes() throw()
+	DWORD GetTotalBytes() noexcept
 	{
 		ULONGLONG nLen = 0;
 		m_InFile.GetSize(nLen);
@@ -385,7 +385,7 @@ public:
 	// If GetAvailableBytes returns the same value as GetTotalBytes, the request buffer contains the whole request.
 	// Otherwise, the remaining data should be read from the client using ReadClient or AsyncReadClient.
 	// Equivalent to EXTENSION_CONTROL_BLOCK::cbAvailable.
-	DWORD GetAvailableBytes() throw()
+	DWORD GetAvailableBytes() noexcept
 	{
 //		LogServerError("IHttpServerContext::GetAvailableBytes not supported in command line mode.\r\n");
 		return 0;
@@ -394,7 +394,7 @@ public:
 	// Returns a pointer to the request buffer containing the data sent by the client.
 	// The size of the buffer can be determined by calling GetAvailableBytes.
 	// Equivalent to EXTENSION_CONTROL_BLOCK::lpbData
-	BYTE *GetAvailableData() throw()
+	BYTE *GetAvailableData() noexcept
 	{
 //		LogServerError("IHttpServerContext::GetAvailableData not supported in command line mode.\r\n");
 		return NULL;
@@ -402,7 +402,7 @@ public:
 
 	// Returns a nul-terminated string that contains the content type of the data sent by the client.
 	// Equivalent to the CONTENT_TYPE server variable or EXTENSION_CONTROL_BLOCK::lpszContentType.
-	LPCSTR GetContentType() throw()
+	LPCSTR GetContentType() noexcept
 	{
 //		LogServerError("IHttpServerContext::GetContentType not supported in command line mode.\r\n");
 		return m_szContentType;
@@ -416,7 +416,7 @@ public:
 	BOOL GetServerVariable(
 		LPCSTR	szVariableName,
 		LPSTR	pvBuffer,
-		DWORD * pdwSize) throw()
+		DWORD * pdwSize) noexcept
 	{
 		if( !pdwSize )
 			return FALSE;
@@ -468,7 +468,7 @@ public:
 	// Synchronously sends the data present in the given buffer to the client that made the request.
 	// Returns TRUE on success, and FALSE on failure. Call GetLastError to get extended error information.
 	// Equivalent to EXTENSION_CONTROL_BLOCK::WriteClient(..., HSE_IO_SYNC).
-	BOOL WriteClient(void *pvBuffer, DWORD *pdwBytes) throw()
+	BOOL WriteClient(void *pvBuffer, DWORD *pdwBytes) noexcept
 	{
 		return (m_OutFile.Write(pvBuffer, *pdwBytes) == S_OK ? TRUE : FALSE);
 		
@@ -477,7 +477,7 @@ public:
 	// Asynchronously sends the data present in the given buffer to the client that made the request.
 	// Returns TRUE on success, and FALSE on failure. Call GetLastError to get extended error information.
 	// Equivalent to EXTENSION_CONTROL_BLOCK::WriteClient(..., HSE_IO_ASYNC).
-	BOOL AsyncWriteClient(void *pvBuffer, DWORD *pdwBytes) throw()
+	BOOL AsyncWriteClient(void *pvBuffer, DWORD *pdwBytes) noexcept
 	{
 		return WriteClient(pvBuffer, pdwBytes);
 	}
@@ -485,7 +485,7 @@ public:
 	// Call this function to synchronously read information from the body of the web client's HTTP request into the buffer supplied by the caller.
 	// Returns TRUE on success, and FALSE on failure. Call GetLastError to get extended error information.
 	// Equivalent to EXTENSION_CONTROL_BLOCK::ReadClient.
-	BOOL ReadClient(void * pvBuffer, DWORD * pdwSize) throw()
+	BOOL ReadClient(void * pvBuffer, DWORD * pdwSize) noexcept
 	{
 		ATLENSURE(pdwSize != NULL);
 		DWORD dwRead = 0;
@@ -506,7 +506,7 @@ public:
 	// The client receives a 302 (Found) HTTP status code.
 	// Returns TRUE on success, and FALSE on failure.
 	// Equivalent to the HSE_REQ_SEND_URL_REDIRECT_RESP server support function.
-	BOOL SendRedirectResponse(LPCSTR /*pszRedirectURL*/) throw()
+	BOOL SendRedirectResponse(LPCSTR /*pszRedirectURL*/) noexcept
 	{
 		LogServerError("IHttpServerContext::SendRedirectResponse");
 		return FALSE;
@@ -518,7 +518,7 @@ public:
 	// Returns TRUE on success, and FALSE on failure.
 	// Equivalent to the HSE_REQ_GET_IMPERSONATION_TOKEN server support function.
 
-	BOOL GetImpersonationToken(HANDLE * /*pToken*/) throw()
+	BOOL GetImpersonationToken(HANDLE * /*pToken*/) noexcept
 	{
 		LogServerError("IHttpServerContext::GetImpersonationToken");
 		return FALSE;
@@ -530,7 +530,7 @@ public:
 	BOOL SendResponseHeader(
 		LPCSTR /*pszHeader = "Content-Type: text/html\r\n\r\n"*/,
 		LPCSTR /*pszStatusCode = "200 OK"*/,
-		BOOL /*fKeepConn=FALSE*/) throw()
+		BOOL /*fKeepConn=FALSE*/) noexcept
 	{
 		LogServerError("IHttpServerContext::SendResponseHeader");
 		return FALSE;
@@ -539,7 +539,7 @@ public:
 	// Call this function to terminate the session for the current request.
 	// Returns TRUE on success, and FALSE on failure.
 	// Equivalent to the HSE_REQ_DONE_WITH_SESSION server support function.
-	BOOL DoneWithSession(DWORD /*dwStatusCode*/) throw()
+	BOOL DoneWithSession(DWORD /*dwStatusCode*/) noexcept
 	{
 		LogServerError("IHttpServerContext::DoneWithSession");
 		return FALSE;
@@ -548,7 +548,7 @@ public:
 	// Call this function to set a special callback function that will be used for handling the completion of asynchronous I/O operations.
 	// Returns TRUE on success, and FALSE on failure.
 	// Equivalent to the HSE_REQ_IO_COMPLETION server support function.
-	BOOL RequestIOCompletion(PFN_HSE_IO_COMPLETION /*pfn*/, DWORD * /*pdwContext*/) throw()
+	BOOL RequestIOCompletion(PFN_HSE_IO_COMPLETION /*pfn*/, DWORD * /*pdwContext*/) noexcept
 	{
 		LogServerError("IHttpServerContext::RequestIOCompletion");
 		return FALSE;
@@ -568,7 +568,7 @@ public:
 		DWORD /*dwHeadLen*/,
 		void * /*pvTail*/,
 		DWORD /*dwTailLen*/,
-		DWORD /*dwFlags*/) throw()
+		DWORD /*dwFlags*/) noexcept
 	{
 		char szBuffer[1024];
 		DWORD dwLen;
@@ -606,7 +606,7 @@ public:
     // request.
     // Returns TRUE on success, FALSE on failure.
     // Equivalent to the HSE_APPEND_LOG_PARAMETER server support function.
-    BOOL AppendToLog(LPCSTR /*szMessage*/, DWORD * /*pdwLen*/) throw()
+    BOOL AppendToLog(LPCSTR /*szMessage*/, DWORD * /*pdwLen*/) noexcept
     {
 		LogServerError("IHttpServerContext::AppendToLog");
 		return FALSE;
@@ -640,16 +640,16 @@ protected:
 		GUID guidService;
 		IID riid;
 
-		ServiceNode() throw()
+		ServiceNode() noexcept
 		{
 		}
 
-		ServiceNode(const ServiceNode& that) throw()
-			:hInst(that.hInst), punk(that.punk), guidService(that.guidService), riid(that.riid)
+		ServiceNode(const ServiceNode& that) noexcept
+		    :hInst(that.hInst), punk(that.punk), guidService(that.guidService), riid(that.riid)
 		{
 		}
 
-		const ServiceNode& operator=(const ServiceNode& that) throw()
+		const ServiceNode& operator=(const ServiceNode& that) noexcept
 		{
 			if (this != &that)
 			{
@@ -677,7 +677,7 @@ public:
 
 	CString m_strErr;
 	
-	CSProcExtension() throw()
+	CSProcExtension() noexcept
 	{
 	}
 
@@ -705,7 +705,7 @@ public:
 		//free(pRequest);
 	}
 
-	BOOL Initialize() throw()
+	BOOL Initialize() noexcept
 	{
 		if (!m_Worker.Initialize(static_cast<IIsapiExtension*>(this)))
 			return FALSE;
@@ -747,16 +747,16 @@ public:
 		return TRUE;
 	}
 
-	void RequestComplete(AtlServerRequest * /*pRequestInfo*/, DWORD /*dwStatus*/, DWORD /*dwSubStatus*/) throw()
+	void RequestComplete(AtlServerRequest * /*pRequestInfo*/, DWORD /*dwStatus*/, DWORD /*dwSubStatus*/) noexcept
 	{
 	}
 
-	HTTP_CODE GetHandlerName(LPCSTR szFileName, LPSTR szHandlerName) throw()
+	HTTP_CODE GetHandlerName(LPCSTR szFileName, LPSTR szHandlerName) noexcept
 	{
 		return _AtlGetHandlerName(szFileName, szHandlerName);
 	}
 
-	HTTP_CODE LoadDispatchFile(LPCSTR szFileName, AtlServerRequest *pRequestInfo) throw()
+	HTTP_CODE LoadDispatchFile(LPCSTR szFileName, AtlServerRequest *pRequestInfo) noexcept
 	{
 		CStencil *pStencil = NULL;
 		HCACHEITEM hStencil = NULL;
@@ -800,8 +800,8 @@ public:
 	}
 
 
-	HTTP_CODE LoadDllHandler(LPCSTR szFileName, AtlServerRequest *pRequestInfo) throw()
-    {
+	HTTP_CODE LoadDllHandler(LPCSTR szFileName, AtlServerRequest *pRequestInfo) noexcept
+	{
         HTTP_CODE hcErr = HTTP_FAIL;
 		CHttpRequest Request;
 		BOOL bRet = Request.Initialize(pRequestInfo->pServerContext, 0);
@@ -825,7 +825,7 @@ public:
     }
 
 
-	BOOL DispatchStencilCall(AtlServerRequest * /*pRequestInfo*/) throw()
+	BOOL DispatchStencilCall(AtlServerRequest * /*pRequestInfo*/) noexcept
 	{
 		return FALSE;
 	}
@@ -978,7 +978,7 @@ public:
 	}
 
 
-	virtual HRESULT AddService(REFGUID guidService, REFIID riid, IUnknown *punk, HINSTANCE hInstance) throw()
+	virtual HRESULT AddService(REFGUID guidService, REFIID riid, IUnknown *punk, HINSTANCE hInstance) noexcept
 	{
 		if (!m_DllCache.AddRefModule(hInstance))
 			return E_FAIL;
@@ -1023,7 +1023,7 @@ public:
 		return S_OK;
 	}
 
-	HRESULT GetService(REFGUID guidService, REFIID riid, void **ppvObject) throw()
+	HRESULT GetService(REFGUID guidService, REFIID riid, void **ppvObject) noexcept
 	{
 		if (!ppvObject)
 			return E_POINTER;
@@ -1051,7 +1051,7 @@ public:
 	}
 
 	HTTP_CODE LoadRequestHandler(LPCSTR szDllPath, LPCSTR szHandlerName, IHttpServerContext *pServerContext,
-		HINSTANCE *phInstance, IRequestHandler **ppHandler) throw()
+		HINSTANCE *phInstance, IRequestHandler **ppHandler) noexcept
 	{
 		return _AtlLoadRequestHandler(szDllPath, szHandlerName, pServerContext, phInstance, 
 			ppHandler, this, static_cast<IDllCache*>(&m_DllCache));
