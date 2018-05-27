@@ -15,8 +15,8 @@
 
 ATL_NOINLINE inline void GetHrErrorDescription(HRESULT hr, CString& strErr) noexcept
 {
-	LPTSTR pszMsg = NULL;
-	::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM, NULL, hr, 0, (LPSTR)&pszMsg, 0, NULL);
+	LPTSTR pszMsg = nullptr;
+	::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM, nullptr, hr, 0, (LPSTR)&pszMsg, 0, nullptr);
 	strErr+= pszMsg;
 	::LocalFree(pszMsg);
 }
@@ -32,7 +32,7 @@ inline bool Emit(CStringA& strBuffer, UINT uID, ...)
 			va_start(arglist, uID);
 			int nLen = _vscprintf((LPCSTR) str, arglist);
 			char *szBuf = strBuffer.GetBuffer(nLen+1);
-			if (szBuf != NULL)
+			if (szBuf != nullptr)
 			{
 				vsprintf_s(szBuf, nLen+1, str, arglist);
 				strBuffer.ReleaseBuffer(nLen);
@@ -107,7 +107,7 @@ public:
 
 	void LogServerError(LPCSTR szErr) noexcept
 	{
-		if (m_ErrFile.m_h == NULL)
+		if (m_ErrFile.m_h == nullptr)
 			return;
 
 		CStringA strBuffer;
@@ -154,7 +154,7 @@ public:
 	{
 		HRESULT hr;
 
-		if (szFileName == NULL)
+		if (szFileName == nullptr)
 		{
 			// use Standard output
 			HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -224,7 +224,7 @@ public:
 			return hr;
 		}
 
-		if ( szQueryString != NULL)
+		if ( szQueryString != nullptr)
 			if( strlen(szQueryString) < ( sizeof(m_szQueryString)-1 ) )
 				strcpy_s(m_szQueryString, sizeof(m_szQueryString), szQueryString);
 			else
@@ -234,7 +234,7 @@ public:
 				return E_INVALIDARG;
 			}
 
-		if ( szContentType != NULL)
+		if ( szContentType != nullptr)
 			if(strlen(szContentType) < ( sizeof(m_szContentType)-1 ) )
 				strcpy_s(m_szContentType, sizeof(m_szContentType), szContentType);
 			else
@@ -244,7 +244,7 @@ public:
 				return E_INVALIDARG;
 			}
 
-		if (szVerb == NULL)
+		if (szVerb == nullptr)
 			strcpy_s(m_szVerb, sizeof(m_szVerb), "GET");
 		else
 		{
@@ -320,7 +320,7 @@ public:
 
 	BOOL SetPathTranslated(LPCSTR szPath)
 	{
-		ATLENSURE(szPath != NULL);
+		ATLENSURE(szPath != nullptr);
 		m_szPathTranslated[0] = '\0';
 
 		if ( strlen(szPath) < sizeof(m_szPathTranslated)-1 )
@@ -397,7 +397,7 @@ public:
 	BYTE *GetAvailableData() noexcept
 	{
 //		LogServerError("IHttpServerContext::GetAvailableData not supported in command line mode.\r\n");
-		return NULL;
+		return nullptr;
 	}
 
 	// Returns a nul-terminated string that contains the content type of the data sent by the client.
@@ -427,7 +427,7 @@ public:
 		size_t bufSize = 0;
 		
 		// retrieve size of buffer
-		getenv_s(&retVal, NULL, bufSize, szVariableName);
+		getenv_s(&retVal, nullptr, bufSize, szVariableName);
 
 		if (retVal != 0)
 		{
@@ -448,7 +448,7 @@ public:
 		}
 		else
 		{
-			if( m_ErrFile.m_h != NULL )
+			if( m_ErrFile.m_h != nullptr)
 			{
 				CStringA	strErrMsg;
 				Emit(strErrMsg, IDS_SERVER_VARIABLE_NOT_FOUND, szVariableName ? szVariableName : "<NULL>");
@@ -487,7 +487,7 @@ public:
 	// Equivalent to EXTENSION_CONTROL_BLOCK::ReadClient.
 	BOOL ReadClient(void * pvBuffer, DWORD * pdwSize) noexcept
 	{
-		ATLENSURE(pdwSize != NULL);
+		ATLENSURE(pdwSize != nullptr);
 		DWORD dwRead = 0;
 		HRESULT hr = m_InFile.Read(pvBuffer, *pdwSize, dwRead);
 		*pdwSize = dwRead;
@@ -574,7 +574,7 @@ public:
 		DWORD dwLen;
 		OVERLAPPED overlapped;
 		memset(&overlapped, 0, sizeof(OVERLAPPED));
-		HANDLE hEvent = CreateEvent(NULL, TRUE, TRUE, NULL);
+		HANDLE hEvent = CreateEvent(nullptr, TRUE, TRUE, nullptr);
 		if (!hEvent)
 			return FALSE;
 		overlapped.hEvent = hEvent;
@@ -689,7 +689,7 @@ public:
 	{
 		AtlServerRequest *pRequest = (AtlServerRequest *) malloc(max(sizeof(AtlServerRequest), sizeof(CComObjectNoLock<CServerContext>)));
 		if (!pRequest)
-			return NULL;
+			return nullptr;
 		pRequest->cbSize = sizeof(AtlServerRequest);
 		return pRequest;
 	}
@@ -738,7 +738,7 @@ public:
 	{
 		for (int i=0; i < m_serviceMap.GetSize(); i++)
 		{
-			ATLASSERT(m_serviceMap[i].punk != NULL);
+			ATLASSERT(m_serviceMap[i].punk != nullptr);
 			m_serviceMap[i].punk->Release();
 			m_DllCache.ReleaseModule(m_serviceMap[i].hInst);
 		}
@@ -762,13 +762,13 @@ public:
 
 	HTTP_CODE LoadDispatchFile(LPCSTR szFileName, AtlServerRequest *pRequestInfo) noexcept
 	{
-		CStencil *pStencil = NULL;
-		HCACHEITEM hStencil = NULL;
+		CStencil *pStencil = nullptr;
+		HCACHEITEM hStencil = nullptr;
 		CHAR szDllPath[MAX_PATH+1];
 		CHAR szHandlerName[ATL_MAX_HANDLER_NAME_LEN+1];
 
-		pRequestInfo->pHandler = NULL;
-		pRequestInfo->hInstDll = NULL;
+		pRequestInfo->pHandler = nullptr;
+		pRequestInfo->hInstDll = nullptr;
 
 		USES_CONVERSION;
 
@@ -851,7 +851,7 @@ public:
 		LPCSTR szContentType,
 		LPCSTR szVerb)
 	{
-		ATLASSERT(szFile != NULL);
+		ATLASSERT(szFile != nullptr);
 
         CSProcServerContext ServerContext;
 		HRESULT hr = ServerContext.Initialize(szOutputFile, szQueryString, szErrFile, szFormFile, szContentType, szVerb);
@@ -1014,7 +1014,7 @@ public:
 		if (nIndex < 0)
 			return S_FALSE;
 
-		ATLASSERT(m_serviceMap[nIndex].punk != NULL);
+		ATLASSERT(m_serviceMap[nIndex].punk != nullptr);
 		m_serviceMap[nIndex].punk->Release();
 
 		HINSTANCE hInstRemove = m_serviceMap[nIndex].hInst;
@@ -1040,7 +1040,7 @@ public:
 		if (nIndex < 0)
 			return E_NOINTERFACE;
 
-		ATLASSERT(m_serviceMap[nIndex].punk != NULL);
+		ATLASSERT(m_serviceMap[nIndex].punk != nullptr);
 		return m_serviceMap[nIndex].punk->QueryInterface(riid, ppvObject);
 	}
 

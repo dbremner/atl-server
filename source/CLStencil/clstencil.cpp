@@ -19,9 +19,9 @@ __inline
 errno_t __cdecl DuplicateEnvString(TCHAR **ppszBuffer, size_t *pnBufferSizeInTChars, const TCHAR *pszVarName)
 {	    
     /* validation section */
-	if (ppszBuffer == NULL) { return  EINVAL; }
-    *ppszBuffer = NULL;
-    if (pnBufferSizeInTChars != NULL)
+	if (ppszBuffer == nullptr) { return  EINVAL; }
+    *ppszBuffer = nullptr;
+    if (pnBufferSizeInTChars != nullptr)
     {
         *pnBufferSizeInTChars = 0;
     }
@@ -32,14 +32,14 @@ errno_t __cdecl DuplicateEnvString(TCHAR **ppszBuffer, size_t *pnBufferSizeInTCh
 	if (nSizeNeeded > 0)
 	{	    		
 		*ppszBuffer = new TCHAR[nSizeNeeded];
-		if (*ppszBuffer != NULL)
+		if (*ppszBuffer != nullptr)
 		{
 			size_t nSizeNeeded2 = 0;
 			ret=_tgetenv_s(&nSizeNeeded2,*ppszBuffer,nSizeNeeded,pszVarName);
 			if (nSizeNeeded2!=nSizeNeeded)
 			{
 				ret=ERANGE;
-			} else if (pnBufferSizeInTChars != NULL)
+			} else if (pnBufferSizeInTChars != nullptr)
 			{
 				*pnBufferSizeInTChars = nSizeNeeded;
 			}				
@@ -73,12 +73,12 @@ HRESULT LoadUILibrary(LPCTSTR szPath, LPCTSTR szDllName, DWORD dwExFlags,
     size_t nPathEnd = 0;
 
     // Gotta have this stuff!
-	if (szPath==NULL || *szPath == '\0')	   
+	if (szPath== nullptr || *szPath == '\0')	   
 	{ 
 		return E_POINTER; 
 	}
 
-    if (szDllName==NULL || *szDllName == '\0') 
+    if (szDllName== nullptr || *szDllName == '\0') 
 	{ 
 		return E_POINTER; 
 	}
@@ -88,9 +88,9 @@ HRESULT LoadUILibrary(LPCTSTR szPath, LPCTSTR szDllName, DWORD dwExFlags,
         return E_INVALIDARG;
 	}
 
-    if (phinstOut != NULL)
+    if (phinstOut != nullptr)
     {
-        *phinstOut = NULL;
+        *phinstOut = nullptr;
     }
 
     szPathTemp[_MAX_PATH-1] = L'\0';
@@ -211,9 +211,9 @@ Done:
         // Beware!  A dll loaded with LOAD_LIBRARY_AS_DATAFILE won't
         // let you use LoadIcon and things like that (only general calls like
         // FindResource and LoadResource).
-        if (phinstOut != NULL)
+        if (phinstOut != nullptr)
         {
-            *phinstOut = LoadLibraryEx(szPathTemp, NULL, dwExFlags);
+            *phinstOut = LoadLibraryEx(szPathTemp, nullptr, dwExFlags);
             hr = (*phinstOut) ? S_OK : E_FAIL;
         }
         if ( szFullPathOut )
@@ -237,12 +237,12 @@ Done:
 //////////////////////////////////////////////////////////////////////////
 HMODULE LoadSearchPath(LPCTSTR szDllName,TCHAR *szPathOut, size_t sizeInCharacters)
 {
-    TCHAR * szEnvPATH = NULL;
-	TCHAR * szEnvPATHBuff = NULL;    
+    TCHAR * szEnvPATH = nullptr;
+	TCHAR * szEnvPATHBuff = nullptr;    
     int nPathLen = 0;
     int nPathIndex = 0;
-    HMODULE hmod = NULL;	
-    if (DuplicateEnvString(&szEnvPATHBuff,NULL,_T("PATH"))==0 && (szEnvPATH=szEnvPATHBuff) != NULL) 
+    HMODULE hmod = nullptr;	
+    if (DuplicateEnvString(&szEnvPATHBuff, nullptr,_T("PATH"))==0 && (szEnvPATH=szEnvPATHBuff) != nullptr) 
 	{
         while (*szEnvPATH) 
 		{
@@ -260,7 +260,7 @@ HMODULE LoadSearchPath(LPCTSTR szDllName,TCHAR *szPathOut, size_t sizeInCharacte
             /* copy this chunk of the path into our trypath */
             nPathLen = 0;
 			TCHAR szPath[_MAX_PATH+1];
-			TCHAR * pszTry = NULL;
+			TCHAR * pszTry = nullptr;
             for (pszTry = szPath; *szEnvPATH != L'\0' && *szEnvPATH != L';'; ++szEnvPATH) 
 			{
 				++nPathLen;
@@ -280,7 +280,7 @@ HMODULE LoadSearchPath(LPCTSTR szDllName,TCHAR *szPathOut, size_t sizeInCharacte
 			}
 
             LoadUILibrary(szPath, szDllName, LOAD_LIBRARY_AS_DATAFILE, 
-                          &hmod, szPathOut,sizeInCharacters, NULL);
+                          &hmod, szPathOut,sizeInCharacters, nullptr);
             if ( hmod )
 			{
                 break;
@@ -309,13 +309,14 @@ HMODULE LoadSearchPath(LPCTSTR szDllName,TCHAR *szPathOut, size_t sizeInCharacte
 //			Note: The primary lang (without the sublang) is tested after the user ui lang.
 // Main Input: szDllName - the name of the resource dll <ToolName>ui.dll. Ex: vcdeployUI.dll
 // Main Output: HMODULE of resource dll or NULL - if not found (see bExeDefaultModule).
-HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFlags=LOAD_LIBRARY_AS_DATAFILE,LPTSTR pszPathOut = NULL,size_t sizeInCharacters = 0  )
+HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFlags=LOAD_LIBRARY_AS_DATAFILE,LPTSTR pszPathOut =
+                          nullptr,size_t sizeInCharacters = 0  )
 {
-    HMODULE hmod = NULL;
+    HMODULE hmod = nullptr;
     TCHAR driverpath[_MAX_PATH + 1], exepath[_MAX_PATH + 1];
-    LPTSTR p = NULL;
+    LPTSTR p = nullptr;
     
-    GetModuleFileName(GetModuleHandle(NULL), driverpath, _MAX_PATH);
+    GetModuleFileName(GetModuleHandle(nullptr), driverpath, _MAX_PATH);
 	 // from MSDN: If the length of the path exceeds the size specified by the nSize parameter, the function succeeds and the string is truncated to nSize characters and may not be null terminated.
 	 driverpath[_MAX_PATH] = '\0';
 
@@ -328,9 +329,9 @@ HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFl
     *p = '\0';
 
     LoadUILibrary(driverpath, szDllName, dwExFlags, 
-                  &hmod, exepath,_countof(exepath), NULL);
+                  &hmod, exepath,_countof(exepath), nullptr);
 
-    if ( hmod == NULL ) 
+    if ( hmod == nullptr) 
 	{
         // search PATH\<lcid> for <ToolName>ui.dll
         hmod = LoadSearchPath(szDllName,exepath,_countof(exepath));
@@ -341,9 +342,9 @@ HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFl
         _tcsncpy_s(pszPathOut,sizeInCharacters, exepath, _MAX_PATH-1);
 	}
 	//Not found dll, return the exe HINSTANCE as a fallback.
-	if (hmod == NULL && bExeDefaultModule)
+	if (hmod == nullptr && bExeDefaultModule)
 	{
-		hmod=GetModuleHandle(NULL);
+		hmod=GetModuleHandle(nullptr);
 	}
     return hmod;
 }
@@ -353,7 +354,7 @@ const TCHAR* szClStencilUIDll=_T("clstencilUI.dll");
 
 CComModule _Module;
 
-void PrintUsage(LPCSTR lpszErrorText=NULL);
+void PrintUsage(LPCSTR lpszErrorText= nullptr);
 bool GetParameters(int argc, char *argv[], 
 				   LPTSTR *ppszInputFile, 
 				   LPTSTR *ppszOutputFile, 
@@ -366,13 +367,13 @@ bool GetParameters(int argc, char *argv[],
 
 int main(int argc, char* argv[])
 {
-	LPTSTR szInputFile = NULL;
-	LPTSTR szOutputFile = NULL;
-	LPTSTR szQueryString = NULL;
-	LPTSTR szFormInput = NULL;
-	LPTSTR szErrorLog = NULL;
-	LPTSTR szContentType = NULL;
-	LPTSTR szVerb = NULL;
+	LPTSTR szInputFile = nullptr;
+	LPTSTR szOutputFile = nullptr;
+	LPTSTR szQueryString = nullptr;
+	LPTSTR szFormInput = nullptr;
+	LPTSTR szErrorLog = nullptr;
+	LPTSTR szContentType = nullptr;
+	LPTSTR szVerb = nullptr;
 	BOOL bNoLogo = FALSE;	
 	HINSTANCE hInstResource=LoadLocResDll(szClStencilUIDll,TRUE);	
 	_AtlBaseModule.AddResourceInstance(hInstResource);
@@ -385,7 +386,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	
-	CoInitialize(NULL);
+	CoInitialize(nullptr);
 
 	if (!GetParameters(argc, argv, &szInputFile, &szOutputFile, &szQueryString, &szFormInput, &szErrorLog, &szContentType, &szVerb, &bNoLogo))
 	{
@@ -399,7 +400,7 @@ int main(int argc, char* argv[])
 		printf((LPCSTR) strHeader);
 	}
 
-	_Module.Init(NULL, GetModuleHandle(NULL));
+	_Module.Init(nullptr, GetModuleHandle(nullptr));
 
 	CSProcExtension extension;
 	if (!extension.Initialize())
@@ -505,7 +506,7 @@ bool GetParameters(int argc, char *argv[],
 		}
 	}
 
-	if (*ppszInputFile == NULL)
+	if (*ppszInputFile == nullptr)
 	{
 		CStringA str;
 		Emit(str, IDS_INPUT_FILE);
@@ -514,14 +515,14 @@ bool GetParameters(int argc, char *argv[],
 	}
 
 	// fix up the query quoted query string
-	if (*ppszQueryString != NULL)
+	if (*ppszQueryString != nullptr)
 	{
 		int n = (int) strlen(*ppszQueryString);
 		(*ppszQueryString)[n] = 0;
 	}
 
 	// fix up the query quoted content-type string
-	if (*ppszContentType != NULL)
+	if (*ppszContentType != nullptr)
 	{
 		int n = (int) strlen(*ppszContentType);
 		(*ppszContentType)[n] = 0;
