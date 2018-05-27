@@ -14,10 +14,7 @@
 
 __inline
 errno_t __cdecl DuplicateEnvString(TCHAR **_PBuffer, size_t *_PBufferSizeInBytes, const TCHAR *_VarName)
-{	
-    char *str;
-    size_t size;
-
+{
     /* validation section */
 	if (_PBuffer == nullptr) { return  EINVAL; }
     *_PBuffer = nullptr;
@@ -29,14 +26,14 @@ errno_t __cdecl DuplicateEnvString(TCHAR **_PBuffer, size_t *_PBufferSizeInBytes
 
     __pragma(warning(push))
     __pragma(warning(disable:4996))
-    str = getenv(_VarName);
+    char *str = getenv(_VarName);
     __pragma(warning(pop))
     if (str == nullptr)
     {
         return 0;
     }
 
-    size = _tcslen(str) + 1;
+    size_t size = _tcslen(str) + 1;
     *_PBuffer = (char*)malloc(size * sizeof(TCHAR));
     if (*_PBuffer == nullptr)
     {
@@ -151,12 +148,11 @@ HRESULT LoadUILibrary(LPCTSTR szPath, LPCTSTR szDllName, DWORD dwExFlags,
 	//the given path (szPath)
     {
         WIN32_FIND_DATA wfdw;
-        HANDLE hDirs;
-        
+
         szPathTemp[pathEnd] = L'\0';
         _tcsncat_s(szPathTemp,_countof(szPathTemp), _T("*.*"), PATHLEFT(szPathTemp));
 
-        hDirs = FindFirstFile(szPathTemp, &wfdw);
+        HANDLE hDirs = FindFirstFile(szPathTemp, &wfdw);
         pathEnd = _TCSNLEN(szPathTemp, _MAX_PATH-1)-3;
         if (hDirs != INVALID_HANDLE_VALUE)
         {
