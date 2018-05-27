@@ -342,7 +342,7 @@ public:
 #ifdef _DEBUG
 	void AssertValid()
 	{
-		ATLASSERT(m_spAds != NULL);
+		ATLASSERT(m_spAds != nullptr);
 	}
 #endif
 protected:
