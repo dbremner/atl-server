@@ -166,18 +166,15 @@ LPSTR _ReverseFind(LPSTR szStr, size_t nLen, char ch)
 BOOL RecursiveCreateDirectoryHelper(LPSTR szPath, size_t nLen)
 {
 	WIN32_FILE_ATTRIBUTE_DATA fad;
-	BOOL bRet;
-	LPSTR szCurrent;
-	char chTmp;
-
+    char chTmp;
 	memset(&fad, 0x00, sizeof(fad));
-	bRet = ::GetFileAttributesExA(szPath, GetFileExInfoStandard, &fad);
+	BOOL bRet = ::GetFileAttributesExA(szPath, GetFileExInfoStandard, &fad);
 	if (!bRet)
 	{
 		if ((GetLastError() == ERROR_PATH_NOT_FOUND) ||
 			(GetLastError() == ERROR_FILE_NOT_FOUND))
 		{
-			szCurrent = _ReverseFind(szPath, nLen, '\\');
+			LPSTR szCurrent = _ReverseFind(szPath, nLen, '\\');
 			if (szCurrent != nullptr)
 			{
 				nLen -= (szPath-szCurrent);
@@ -207,9 +204,7 @@ BOOL RecursiveCreateDirectoryHelper(LPSTR szPath, size_t nLen)
 BOOL RecursiveCreateDirectory(LPCSTR szDir)
 {
 	char szPath[MAX_PATH];
-	size_t nLen;
-
-	nLen = strlen(szDir);
+	size_t nLen = strlen(szDir);
 	if (nLen >= MAX_PATH)
 	{
 		SetLastError(ERROR_BUFFER_OVERFLOW);
@@ -341,8 +336,7 @@ bool FormatMsg(CString& strDest, UINT uId, ...)
 
 int ProcessSettings(CDepSettings *pSettings)
 {
-	int result = ATLSDPLY_FAIL;
-	long nListLen = 0;
+    long nListLen = 0;
 	CComPtr<IXMLDOMNodeList> spHostList;
 	if (!pSettings)
 	{
@@ -353,7 +347,7 @@ int ProcessSettings(CDepSettings *pSettings)
 	// Get the list of host's from the settings object
 	// We should have already failed loading
 	// settings if there was no host list.
-	result = pSettings->GetHostList(&spHostList);
+	int result = pSettings->GetHostList(&spHostList);
 	RETURN_ON_UNEXPECTED_HRP(result, spHostList); 
 												
 	result = spHostList->get_length(&nListLen);
@@ -852,14 +846,13 @@ int SetRootAppMappings(	CADSIHelper *pAdsHelper,
 	    return ATLSDPLY_SUCCESS; // not enough info!
     }
 
-	    HRESULT hr = E_FAIL;
-	CStringW rgMappings[MAX_VERB_BLOCKS];
+    CStringW rgMappings[MAX_VERB_BLOCKS];
 	CComPtr<IXMLDOMNodeList> spMappingNodes;
 	CPathW strIsapiPath;
 	CStringW strVirtDirPath(szvdfspath);
 	CStringW strExtFileName(szextfilename);
 	strIsapiPath.Combine(strVirtDirPath, strExtFileName);
-	hr = pSettings->GetAppMappingList(&spMappingNodes);
+	HRESULT hr = pSettings->GetAppMappingList(&spMappingNodes);
 	RETURN_ON_UNEXPECTED(hr);
 
 	if (!spMappingNodes)
@@ -867,8 +860,8 @@ int SetRootAppMappings(	CADSIHelper *pAdsHelper,
 	    return ATLSDPLY_SUCCESS; // nothing to do
     }
 
-	long nMappingCount = 0, i=0;
-	hr = spMappingNodes->get_length(&nMappingCount);
+    long nMappingCount = 0;
+    hr = spMappingNodes->get_length(&nMappingCount);
 	RETURN_ON_UNEXPECTED(hr);
 
 	if (nMappingCount <= 0)
@@ -896,7 +889,7 @@ int SetRootAppMappings(	CADSIHelper *pAdsHelper,
 
 	CComBSTR strAttrName(L"fileext");
     // loop through the nodes and register the extensions
-	for (i = 0; i<nMappingCount; i++)
+	for (long i = 0; i<nMappingCount; i++)
 	{
 		CComPtr<IXMLDOMNode> spMappingNode, spExtAttr;
 		CComPtr<IXMLDOMNamedNodeMap> spAttributes;
@@ -948,8 +941,7 @@ int SetRootAppMappings(	CADSIHelper *pAdsHelper,
 			return ATLSDPLY_FAIL;
 		}
 
-		CStringW strEntry;
-		strEntry = bstrExt;
+	    CStringW strEntry = bstrExt;
 		strEntry += L",";
 		strEntry += strIsapiPath;
 
@@ -1199,10 +1191,9 @@ int LocalW3svcReset()
 int UpdateFileSystem(CDepSettings *pSettings)
 {
 	CComPtr<IXMLDOMNodeList> spFileGroupsList;
-	HRESULT hr = E_FAIL;
-	long nAppFileGroups = 0, i=0;
+    long nAppFileGroups = 0;
 
-	// Create the vroot root directory
+    // Create the vroot root directory
 	CPath FSPath(pSettings->GetVirtDirFSPath());
 
 	if (FSPath.m_strPath.GetLength() != 0 && !FSPath.IsDirectory())
@@ -1219,7 +1210,7 @@ int UpdateFileSystem(CDepSettings *pSettings)
 		return ATLSDPLY_FAIL;
 	}
 	
-	hr = pSettings->GetFileGroups(&spFileGroupsList);
+	HRESULT hr = pSettings->GetFileGroups(&spFileGroupsList);
 	RETURN_ON_UNEXPECTED_HRP(hr, spFileGroupsList);
 
 	//loop through each app file group
@@ -1231,7 +1222,7 @@ int UpdateFileSystem(CDepSettings *pSettings)
 	    return ATLSDPLY_SUCCESS; // nothing to do
     }
 
-	for (i=0; i<nAppFileGroups; i++)
+	for (long i = 0; i<nAppFileGroups; i++)
 	{
 		CComPtr<IXMLDOMNode> spAppFileGroupNode;	
 		CComPtr<IXMLDOMNodeList> spFileNodeList;

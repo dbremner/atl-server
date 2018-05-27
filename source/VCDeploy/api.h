@@ -121,12 +121,11 @@ public:
 		CComPtr<IMoniker> spmkLocalHost;
 		CComPtr<IBindCtx> spbc;
 		ULONG cEaten = 0;
-		HRESULT hr = E_FAIL;
-		CComBSTR bstrApplPath(szPath);
+	    CComBSTR bstrApplPath(szPath);
 		CComPtr<IDispatch> spDispAds;
 
 		// try to connect to the iisadmin service
-		hr = CreateBindCtx(NULL, &spbc);
+		HRESULT hr = CreateBindCtx(NULL, &spbc);
 		if (SUCCEEDED(hr))
 		{
 			hr = MkParseDisplayName(spbc, bstrApplPath, &cEaten, &spmkLocalHost);
@@ -189,11 +188,10 @@ public:
 		    return E_UNEXPECTED;
 	    }
 
-	    HRESULT hr = E_FAIL;
-		CComPtr<IDispatch> spDispNewContainer;
-		hr = m_spAds->Create(CComBSTR(L"IIsWebDirectory"),
-						CComBSTR(szRootName),
-						&spDispNewContainer);
+	    CComPtr<IDispatch> spDispNewContainer;
+		HRESULT hr = m_spAds->Create(CComBSTR(L"IIsWebDirectory"),
+		                             CComBSTR(szRootName),
+		                             &spDispNewContainer);
 		if (hr != S_OK)
 		{
 		    return hr;
@@ -225,11 +223,10 @@ public:
 		    return E_UNEXPECTED;
 	    }
 
-	    HRESULT hr = E_FAIL;
-		CComPtr<IDispatch> spDispNewContainer;
-		hr = m_spAds->Create(CComBSTR(L"IIsWebVirtualDir"),
-						CComBSTR(szRootName),
-						&spDispNewContainer);
+	    CComPtr<IDispatch> spDispNewContainer;
+		HRESULT hr = m_spAds->Create(CComBSTR(L"IIsWebVirtualDir"),
+		                             CComBSTR(szRootName),
+		                             &spDispNewContainer);
 		if (hr != S_OK)
 		{
 		    return hr;

@@ -71,7 +71,6 @@ HRESULT LoadUILibrary(LPCTSTR szPath, LPCTSTR szDllName, DWORD dwExFlags,
     TCHAR szPathTemp[_MAX_PATH + 1] = _T("");
     HRESULT hr = E_FAIL;
     LCID lcidFound = (LCID)-1;
-    size_t pathEnd;
 
     // Gotta have this stuff!
 	if (szPath== nullptr || *szPath == '\0')	   { return E_POINTER; }
@@ -102,7 +101,7 @@ HRESULT LoadUILibrary(LPCTSTR szPath, LPCTSTR szDllName, DWORD dwExFlags,
         return E_FAIL;
 	}
 
-    pathEnd = _TCSNLEN(szPathTemp, _MAX_PATH-1);
+    size_t pathEnd = _TCSNLEN(szPathTemp, _MAX_PATH-1);
     
     {	        
 		LANGID langid = GetUserDefaultUILanguage();
@@ -241,7 +240,6 @@ HMODULE LoadSearchPath(LPCTSTR szDllName,TCHAR *szPathOut, size_t sizeInCharacte
 	TCHAR * szEnvPATHBuff = nullptr;
     TCHAR szPath[_MAX_PATH+1];
     TCHAR * ptry;
-    int pathlen;
     int nPathIndex = 0;
     HMODULE hmod = nullptr;	
     if (DuplicateEnvString(&szEnvPATHBuff, nullptr,_T("PATH"))==0 && (szEnvPATH=szEnvPATHBuff) != nullptr) 
@@ -260,7 +258,7 @@ HMODULE LoadSearchPath(LPCTSTR szDllName,TCHAR *szPathOut, size_t sizeInCharacte
             ++nPathIndex;
 
             /* copy this chunk of the path into our trypath */
-            pathlen = 0;
+            int pathlen = 0;
             for (ptry = szPath; *szEnvPATH != L'\0' && *szEnvPATH != L';'; ++szEnvPATH) 
 			{
 				++pathlen;
@@ -310,11 +308,10 @@ HMODULE LoadLocResDll(LPCTSTR szDllName,BOOL bExeDefaultModule=TRUE,DWORD dwExFl
 {
     HMODULE hmod;
     TCHAR driverpath[_MAX_PATH + 1], exepath[_MAX_PATH + 1];
-    LPTSTR p;
-    
+
     GetModuleFileName(GetModuleHandle(nullptr), driverpath, _MAX_PATH);
     // find path of tool
-    p = driverpath + _TCSNLEN(driverpath, _MAX_PATH-1)-1;
+    LPTSTR p = driverpath + _TCSNLEN(driverpath, _MAX_PATH-1)-1;
     while ( *p != L'\\' && p != driverpath)
 	{
         p--;
@@ -374,11 +371,10 @@ int main(int argc, char* argv[])
 			return 0;
 		}
 
-		HRESULT hr = E_FAIL;
-		CDepSettings AppSettings;
+	    CDepSettings AppSettings;
 		int nRet = 0;
 
-		hr = ProcessAccessCheck();
+		HRESULT hr = ProcessAccessCheck();
 		if (hr == S_FALSE)
 		{
 			PrintError(IDS_MUSTBEADMIN);

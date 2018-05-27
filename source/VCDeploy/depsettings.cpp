@@ -61,9 +61,7 @@ HRESULT CDepSettings::GetFileGroups(IXMLDOMNodeList **ppList)
 
 unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
 {
-	HRESULT hr = E_FAIL;
-	
-	if (!szSettingsPath)
+    if (!szSettingsPath)
 	{
 	    return IDS_UNEXPECTED;
     }
@@ -73,7 +71,7 @@ unsigned int CDepSettings::Load(LPCSTR szSettingsPath)
 	CComPtr<IXMLDOMNode> spRoot;
 	CComPtr<IXMLDOMNode> spResultNode;
 
-	hr = spDOMDoc.CoCreateInstance(L"Microsoft.XMLDOM");
+	HRESULT hr = spDOMDoc.CoCreateInstance(L"Microsoft.XMLDOM");
 	if (FAILED(hr))
 	{
 	    return IDS_ERR_FAILEDTOCREATEDOM;
