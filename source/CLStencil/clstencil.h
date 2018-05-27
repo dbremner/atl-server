@@ -497,7 +497,7 @@ public:
 	// Call this function to asynchronously read information from the body of the web client's HTTP request into the buffer supplied by the caller.
 	// Returns TRUE on success, and FALSE on failure. Call GetLastError to get extended error information.
 	// Equivalent to the HSE_REQ_ASYNC_READ_CLIENT server support function.
-	BOOL AsyncReadClient(void * pvBuffer, DWORD * pdwSize) throw()
+	BOOL AsyncReadClient(void * pvBuffer, DWORD * pdwSize) noexcept
 	{
 		return ReadClient(pvBuffer, pdwSize);
 	}
@@ -734,7 +734,7 @@ public:
 		return TRUE;
 	}
 
-	BOOL Uninitialize() throw()
+	BOOL Uninitialize() noexcept
 	{
 		for (int i=0; i < m_serviceMap.GetSize(); i++)
 		{
