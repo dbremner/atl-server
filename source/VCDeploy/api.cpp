@@ -1571,7 +1571,7 @@ HRESULT ProcessAccessCheck()
 	return E_UNEXPECTED; // should have returned something before here.
 }
 
-HRESULT GetWWWRootPath(const CStringW strWebHostName,CStringW& strPath)
+HRESULT GetWWWRootPath(const CStringW& strWebHostName,CStringW& strPath)
 {           
       CComPtr<IEnumVARIANT> spEnum; 
       CComPtr<IADsContainer> spCont;

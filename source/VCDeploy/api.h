@@ -407,4 +407,4 @@ public:
 	bool m_bShowUsage;
 	CString m_strSettingsFile;
 };
-HRESULT GetWWWRootPath(const CStringW strWebHostName,CStringW& strPath);
+HRESULT GetWWWRootPath(const CStringW& strWebHostName,CStringW& strPath);
